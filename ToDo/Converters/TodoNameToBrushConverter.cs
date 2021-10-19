@@ -15,7 +15,7 @@ namespace ToDo.Converters
         {
             var todoItemName = value.ToString();
 
-            if(todoItemName.Length >5)
+            if (todoItemName.EndsWith("!"))
             {
                 return Brushes.Red;
             } else

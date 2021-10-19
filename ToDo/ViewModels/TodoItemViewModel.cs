@@ -20,8 +20,8 @@ namespace ToDo.ViewModels
 
         public DateTime Datum
         {
-            get { return TodoItem.Datum; }
-            set { TodoItem.Datum = value; }
+            get { return TodoItem.Timestamp; }
+            set { TodoItem.Timestamp = value; }
         }
 
         public bool IsDone

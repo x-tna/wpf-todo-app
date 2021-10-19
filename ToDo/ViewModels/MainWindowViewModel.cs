@@ -81,7 +81,7 @@ namespace ToDo.ViewModels
                 {
                     Name = NewTodoName,
                     IsDone = false,
-                    Datum = _dateTimeService.Now(),
+                    Timestamp = _dateTimeService.Now(),
                 };
                 TodoItems.Add(CreateTodoViewModel(newItem));
 

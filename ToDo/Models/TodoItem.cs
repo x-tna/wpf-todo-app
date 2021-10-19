@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Windows;
-using ToDo.Commands;
-using ToDo.Services;
-using ToDo.ViewModels;
-using ToDo.Views;
 
 namespace ToDo
 {
@@ -14,7 +9,7 @@ namespace ToDo
 
          public bool IsDone { get; set; }
 
-        public DateTime Datum { get; set; }
+        public DateTime Timestamp { get; set; }
         
     }
 }
