@@ -1,0 +1,102 @@
+﻿<Window x:Class="ToDo.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:conv="clr-namespace:ToDo.Converters"
+        mc:Ignorable="d"
+        Background="MintCream"
+        Title="ToDo - Listen App" Height="450" Width="600">
+
+    <Window.Resources> 
+        <Style x:Key="StyleHeader" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontWeight" Value="DemiBold" />
+        </Style>
+
+        <Style x:Key="StyleButton" TargetType="Button" >
+            <Setter Property="Height" Value="32" />
+            <Setter Property="MinWidth" Value="100" />
+            <Setter Property="Padding" Value="6" />
+            <Setter Property="FontWeight" Value="DemiBold" />
+            <Setter Property="Background" Value="PaleGreen" />
+            <!--<Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="3" Background="PaleGreen"  BorderThickness="1" Padding="1" BorderBrush="Black">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>-->
+        </Style>
+
+        <conv:TodoNameToBrushConverter  x:Key="ToDoNameToBrushConverter"/>
+        <conv:DateToLongDateConverter x:Key="DateToLongDateConverter" />
+
+        <DataTemplate x:Key="TodoItemTemplate">
+            <StackPanel Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding Path=IsDone, Mode=TwoWay}" />
+                <TextBlock Width="180" 
+                           Margin="5,0,0,0" 
+                           Foreground="{Binding Name, Converter={StaticResource ToDoNameToBrushConverter}}"
+                           Text="{Binding Name}" />
+                <TextBlock Text="{Binding Datum, Converter={StaticResource DateToLongDateConverter}}" />
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
+    
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Vertical"
+                    Margin="10,0,0,16"
+                    Grid.Row="0">
+
+            <TextBlock Text="ToDo Eintrag hinzufügen"
+                       Style="{StaticResource StyleHeader}"
+                       Margin="0,10,0,5"/>
+            <StackPanel Orientation="Horizontal" 
+                        Height="Auto"
+                        VerticalAlignment="Top">
+                <TextBox Name="ToDoAdd"  
+                         Width="400"
+                         Text="{Binding NewTodoName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Margin="10,0,0,0"
+                        Name="ButtonAdd"
+                        Style="{StaticResource ResourceKey=StyleButton}"
+                        Content="Hinzufügen"
+                        Command="{Binding AddTodoCommand}"/>
+            </StackPanel>
+        </StackPanel>
+        
+        <TextBlock Text="ToDo`s"
+                   Style="{StaticResource StyleHeader}"
+                   Margin="10,0,0,5"
+                   Grid.Row="1"/>
+        
+        <StackPanel Orientation="Horizontal"
+                    Margin="10,0,0,0"
+                    Grid.Row="2">
+            <ListBox x:Name="TodoList"
+                     ItemsSource="{Binding TodoItems, Mode=TwoWay}"
+                     SelectedItem="{Binding SelectedTodoItem}"
+                     HorizontalAlignment="Left"
+                     Margin="0,0,0,10"
+                     Width="400"
+                     ItemTemplate="{StaticResource TodoItemTemplate}"/>
+                <Button x:Name="ButtonDelete"
+                        Margin="10,0,0,0"
+                        VerticalAlignment="Top" 
+                        Style="{StaticResource ResourceKey=StyleButton}"
+                        Content="Entfernen"
+                        Command="{Binding DeleteTodoCommand}"/>
+        </StackPanel>
+
+    </Grid>
+</Window>
