@@ -7,7 +7,7 @@ using ToDo.Services;
 
 namespace ToDo.ViewModels
 {
-    class TodoItemViewModel
+    class TodoItemViewModel : ViewModelBase
     {
         private readonly ITodoItemService _todoitemService;
         private readonly IEnumerable<TodoItem> _allTodos;
@@ -18,7 +18,7 @@ namespace ToDo.ViewModels
             set { TodoItem.Name = value; }
         }
 
-        public DateTime Datum
+        public DateTime TimeStamp
         {
             get { return TodoItem.Timestamp; }
             set { TodoItem.Timestamp = value; }
@@ -27,7 +27,7 @@ namespace ToDo.ViewModels
         public bool IsDone
         {
             get { return TodoItem.IsDone; }
-            set 
+            set
             {
                 TodoItem.IsDone = value;
                 _todoitemService.WriteTodos(_allTodos);
@@ -38,8 +38,8 @@ namespace ToDo.ViewModels
         public TodoItem TodoItem { get; }
 
         public TodoItemViewModel(
-            TodoItem todoitem, 
-            ITodoItemService todoitemService, 
+            TodoItem todoitem,
+            ITodoItemService todoitemService,
             IEnumerable<TodoItemViewModel> allTodos)
         {
             TodoItem = todoitem;
