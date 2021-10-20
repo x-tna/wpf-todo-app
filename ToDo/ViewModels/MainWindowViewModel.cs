@@ -50,6 +50,7 @@ namespace ToDo.ViewModels
             DeleteTodoCommand = new ActionCommand(DeleteSelectedTodo, CanDeleteTodo);
             TodoItems = new ObservableCollection<TodoItemViewModel>();
             var todoItemModels = _todoItemService.ReadTodos();
+            NewTodoName = NEW_TODO;
 
             foreach (var item in todoItemModels)
             {
