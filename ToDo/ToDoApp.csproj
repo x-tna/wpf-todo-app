@@ -76,6 +76,7 @@
     <Compile Include="Converters\DateToLongDateConverter.cs" />
     <Compile Include="Converters\TodoNameToBrushConverter.cs" />
     <Compile Include="ViewModels\TodoItemViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

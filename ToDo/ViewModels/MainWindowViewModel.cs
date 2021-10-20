@@ -6,28 +6,37 @@ using ToDo.Services;
 
 namespace ToDo.ViewModels
 {
-    class MainWindowViewModel
+    class MainWindowViewModel : ViewModelBase
     {
 
         private readonly ITodoItemService _todoItemService;
         private readonly IDateTimeService _dateTimeService;
+        private const string NEW_TODO = "Neues Todo";
 
         private string _newTodoName;
         public string NewTodoName
         {
             get { return _newTodoName; }
-            set { _newTodoName = value; AddTodoCommand?.RaisCanExecuteChanged(); }
+            set
+            {
+                _newTodoName = value;
+                AddTodoCommand?.RaisCanExecuteChanged();
+                RaisePropertyChanged(nameof(NewTodoName));
+            }
         }
-        public ObservableCollection<TodoItemViewModel> TodoItems { get; set; }
 
         private TodoItemViewModel _selectedTodoItem;
         public TodoItemViewModel SelectedTodoItem
         {
             get { return _selectedTodoItem; }
-            set { _selectedTodoItem = value; DeleteTodoCommand?.RaisCanExecuteChanged(); }
+            set
+            {
+                _selectedTodoItem = value;
+                DeleteTodoCommand?.RaisCanExecuteChanged();
+            }
         }
 
-
+        public ObservableCollection<TodoItemViewModel> TodoItems { get; set; }
         public ActionCommand AddTodoCommand { get; set; }
         public ActionCommand DeleteTodoCommand { get; set; }
 
@@ -37,9 +46,9 @@ namespace ToDo.ViewModels
         {
             _todoItemService = todoItemService;
             _dateTimeService = dateTimeService;
-
+            AddTodoCommand = new ActionCommand(AddNewTodo, CanAddNewTodo);
+            DeleteTodoCommand = new ActionCommand(DeleteSelectedTodo, CanDeleteTodo);
             TodoItems = new ObservableCollection<TodoItemViewModel>();
-
             var todoItemModels = _todoItemService.ReadTodos();
 
             foreach (var item in todoItemModels)
@@ -47,12 +56,9 @@ namespace ToDo.ViewModels
                 TodoItems.Add(CreateTodoViewModel(item));
             }
 
-            AddTodoCommand = new ActionCommand(AddNewTodo, CanAddNewTodo);
-            DeleteTodoCommand = new ActionCommand(DeleteSelectedTodo, CanDeleteTodo);
-
         }
 
-        private TodoItemViewModel CreateTodoViewModel (TodoItem todoItem)
+        private TodoItemViewModel CreateTodoViewModel(TodoItem todoItem)
         {
             return new TodoItemViewModel(todoItem, _todoItemService, TodoItems);
         }
@@ -77,14 +83,13 @@ namespace ToDo.ViewModels
 
                 _todoItemService.WriteTodos(TodoItems.Select(vm => vm.TodoItem));
 
+                NewTodoName = NEW_TODO;
             }
         }
 
         private bool CanDeleteTodo()
         {
-            if (SelectedTodoItem != null)
-                return true;
-            return false;
+            return SelectedTodoItem != null;
         }
 
         private void DeleteSelectedTodo()

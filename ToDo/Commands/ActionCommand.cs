@@ -10,15 +10,15 @@ namespace ToDo.Commands
 {
     class ActionCommand : ICommand
     {
-        private Action _Execute;
+        private Action _execute;
         private Func<bool> _canExecute;
 
         public event EventHandler CanExecuteChanged;
 
-        public ActionCommand(Action Execute, Func<bool> CanExecute)
+        public ActionCommand(Action execute, Func<bool> canExecute)
         {
-            _Execute = Execute;
-            _canExecute = CanExecute;
+            _execute = execute;
+            _canExecute = canExecute;
         }
 
         public bool CanExecute(object parameter)
@@ -33,7 +33,7 @@ namespace ToDo.Commands
 
         public void Execute(object parameter)
         {
-            _Execute.Invoke();
+            _execute.Invoke();
         }
 
         public void RaisCanExecuteChanged()
