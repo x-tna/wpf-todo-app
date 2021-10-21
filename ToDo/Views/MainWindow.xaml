@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:conv="clr-namespace:ToDo.Converters"
         mc:Ignorable="d"
-        Background="MintCream"
+        Background="DimGray"
         Title="ToDo - Listen App" Height="450" Width="600">
 
     <Window.Resources> 
         <Style x:Key="StyleHeader" TargetType="TextBlock">
             <Setter Property="FontSize" Value="16" />
             <Setter Property="FontWeight" Value="DemiBold" />
+            <Setter Property="Foreground" Value="White" />
         </Style>
 
         <Style x:Key="StyleButton" TargetType="Button" >
@@ -20,15 +21,26 @@
             <Setter Property="Padding" Value="6" />
             <Setter Property="FontWeight" Value="DemiBold" />
             <Setter Property="Background" Value="PaleGreen" />
-            <!--<Setter Property="Template">
+            <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border CornerRadius="3" Background="PaleGreen"  BorderThickness="1" Padding="1" BorderBrush="Black">
+                        <Border  x:Name="Border" CornerRadius="3" Background="PaleGreen"  BorderThickness="1" Padding="1" BorderBrush="Black">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter TargetName="Border" Property="Background" Value="lightpink" />
+                                <Setter TargetName="Border" Property="BorderBrush" Value="Green" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="lightblue" />
+                                <Setter TargetName="Border" Property="BorderBrush" Value="white" />
+                                <Setter Property="Foreground" Value="gray" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
-            </Setter>-->
+            </Setter>
         </Style>
 
         <conv:TodoNameToBrushConverter  x:Key="ToDoNameToBrushConverter"/>
@@ -41,7 +53,7 @@
                            Margin="5,0,0,0" 
                            Foreground="{Binding Name, Converter={StaticResource ToDoNameToBrushConverter}}"
                            Text="{Binding Name}" />
-                <TextBlock Text="{Binding Datum, Converter={StaticResource DateToLongDateConverter}}" />
+                <TextBlock Text="{Binding TimeStamp, Converter={StaticResource DateToLongDateConverter}}" />
             </StackPanel>
         </DataTemplate>
     </Window.Resources>
