@@ -160,7 +160,7 @@ namespace TodoApp.UnitTests.ViewModels
             viewModel.AddTodoCommand.Execute(null);
 
             // Assert
-            viewModel.TodoItems.Single().Datum.Equals(FakeTimestamp);
+            viewModel.TodoItems.Single().TimeStamp.Equals(FakeTimestamp);
 
         }
 

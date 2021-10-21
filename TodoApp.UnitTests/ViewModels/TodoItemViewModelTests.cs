@@ -37,7 +37,7 @@ namespace TodoApp.UnitTests.ViewModels
             var FakeTimestamp = DateTime.Now;
 
             // Act
-            viewModel.Datum = FakeTimestamp;
+            viewModel.TimeStamp = FakeTimestamp;
 
             // Assert
             viewModel.TodoItem.Timestamp.ShouldBe(FakeTimestamp);
