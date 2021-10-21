@@ -66,7 +66,7 @@ namespace ToDo.ViewModels
 
         private bool CanAddNewTodo()
         {
-            return !String.IsNullOrWhiteSpace(NewTodoName);
+            return (!String.IsNullOrWhiteSpace(NewTodoName)) &! String.Equals(NewTodoName, NEW_TODO);
         }
 
         private void AddNewTodo()
