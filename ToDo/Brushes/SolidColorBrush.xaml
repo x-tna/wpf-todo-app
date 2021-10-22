@@ -1,0 +1,14 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+
+    <SolidColorBrush x:Key="BackgroundMainWindow" Color="#FF373737" />
+    <SolidColorBrush x:Key="BackgroundListBox" Color="#FF484545" />
+    <SolidColorBrush x:Key="ForegroundLixtBox" Color="#FF81EDD7" />
+    <SolidColorBrush x:Key="BackgroundButton" Color="#11EE88" />
+
+    <SolidColorBrush x:Key="BackgroundButtonIsPressed" Color= "#FF12EDED"/>
+    <SolidColorBrush x:Key="BackgroundButtonNotEnabled" Color="AliceBlue" />
+    
+
+</ResourceDictionary>

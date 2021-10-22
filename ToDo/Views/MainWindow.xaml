@@ -11,13 +11,20 @@
     <Window.Resources> 
         <DataTemplate x:Key="TodoItemTemplate">
             <StackPanel Orientation="Horizontal">
-                <CheckBox IsChecked="{Binding Path=IsDone, Mode=TwoWay}" />
-                <TextBlock Width="180" 
+                <CheckBox x:Name="Checkbox" IsChecked="{Binding Path=IsDone, Mode=TwoWay}" />
+                <TextBlock x:Name="TextTodoName" Width="180" 
                            Margin="5,0,0,0" 
                            Foreground="{Binding Name, Converter={StaticResource ToDoNameToBrushConverter}}"
                            Text="{Binding Name}" />
-                <TextBlock Text="{Binding TimeStamp, Converter={StaticResource DateToLongDateConverter}}" />
+                <TextBlock x:Name="TextTimestamp"
+                           Text="{Binding TimeStamp, Converter={StaticResource DateToLongDateConverter}}" />
             </StackPanel>
+            <DataTemplate.Triggers>
+                <Trigger SourceName="Checkbox" Property="IsChecked" Value="True">
+                    <Setter TargetName="TextTimestamp" Property="TextDecorations" Value="Strikethrough" />
+                    <Setter TargetName="TextTodoName" Property="TextDecorations" Value="Strikethrough" />
+                </Trigger>
+            </DataTemplate.Triggers>
         </DataTemplate>
     </Window.Resources>
     
@@ -41,7 +48,9 @@
                         VerticalAlignment="Top">
                 <TextBox Name="ToDoAdd"  
                          Width="400"
-                         Text="{Binding NewTodoName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                         VerticalAlignment="Center"
+                         Text="{Binding NewTodoName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource StyleNewTodoName}"/>
                 <Button Margin="10,0,0,0"
                         Name="ButtonAdd"
                         Style="{StaticResource ResourceKey=StyleButton}"
@@ -49,12 +58,11 @@
                         Command="{Binding AddTodoCommand}"/>
             </StackPanel>
         </StackPanel>
-        
+
         <TextBlock Text="ToDo`s"
                    Style="{StaticResource StyleHeader}"
                    Margin="10,0,0,5"
                    Grid.Row="1"/>
-        
         <StackPanel Orientation="Horizontal"
                     Margin="10,0,0,0"
                     Grid.Row="2">
@@ -64,14 +72,16 @@
                      HorizontalAlignment="Left"
                      Margin="0,0,0,10"
                      Width="400"
-                     ItemTemplate="{StaticResource TodoItemTemplate}"/>
-                <Button x:Name="ButtonDelete"
+                     ItemTemplate="{StaticResource TodoItemTemplate}"
+                     Style="{StaticResource StyleListBox}"/>
+            <Button x:Name="ButtonDelete"
                         Margin="10,0,0,0"
                         VerticalAlignment="Top" 
                         Style="{StaticResource ResourceKey=StyleButton}"
                         Content="Entfernen"
                         Command="{Binding DeleteTodoCommand}"/>
         </StackPanel>
+        
 
     </Grid>
 </Window>

@@ -11,6 +11,8 @@ namespace ToDo.Converters
 {
     class TodoNameToBrushConverter : IValueConverter
     {
+        public SolidColorBrush ForegroundLixtBox { get; set; }
+
         object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var todoItemName = value.ToString();
@@ -20,7 +22,7 @@ namespace ToDo.Converters
                 return Brushes.Red;
             } else
             {
-                return Brushes.Black;
+                return ForegroundLixtBox;
             }
         }
 
