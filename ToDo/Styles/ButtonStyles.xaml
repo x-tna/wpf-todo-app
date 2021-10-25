@@ -22,7 +22,7 @@
                              Padding="1" 
                              BorderBrush="DarkCyan"
                              Background="{TemplateBinding Background}">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                       <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsPressed" Value="true">
@@ -36,6 +36,41 @@
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Foreground" Value="Yellow" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="StyleButtonMaterialDesign" TargetType="Button">
+        <Setter Property="Height" Value="26" />
+        <Setter Property="FontWeight" Value="DemiBold" />
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="#FF6200EE"/>
+        <Setter Property="Background" Value="{StaticResource BackgroundMainWindowDark}"/>
+        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border  x:Name="Border" 
+                             CornerRadius="4"  
+                             BorderThickness="0"
+                             Padding="6,0,6,0"
+                             Background="{TemplateBinding Background}">
+                        <Grid>
+                            <TextBlock Text="{TemplateBinding Content, Converter={StaticResource TextToUpperCaseConverter}}"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       TextWrapping="WrapWithOverflow"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter TargetName="Border" Property="Background" Value="#FFDAC3F8" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#FFF4F0F9" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

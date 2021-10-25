@@ -8,10 +8,10 @@ namespace ToDo.ViewModels
 {
     class MainWindowViewModel : ViewModelBase
     {
+        private const string NEW_TODO = "Neues Todo";
 
         private readonly ITodoItemService _todoItemService;
         private readonly IDateTimeService _dateTimeService;
-        private const string NEW_TODO = "Neues Todo";
 
         private string _newTodoName;
         public string NewTodoName
@@ -36,9 +36,22 @@ namespace ToDo.ViewModels
             }
         }
 
-        public ObservableCollection<TodoItemViewModel> TodoItems { get; set; }
-        public ActionCommand AddTodoCommand { get; set; }
-        public ActionCommand DeleteTodoCommand { get; set; }
+        private ObservableCollection<TodoItemViewModel> _todoItems;
+        public ObservableCollection<TodoItemViewModel> TodoItems
+        {
+            get { return _todoItems; }
+            set
+            {
+                _todoItems = value;
+                RaisePropertyChanged(nameof(TodoItems));
+            }
+        }
+
+        public ActionCommand AddTodoCommand { get; }
+        public ActionCommand DeleteTodoCommand { get; }
+        public ActionCommand ShowAllCommand { get; }
+        public ActionCommand ShowActiveCommand { get; }
+        public ActionCommand ShowDoneCommand { get; }
 
         public MainWindowViewModel(
             ITodoItemService todoItemService,
@@ -46,17 +59,56 @@ namespace ToDo.ViewModels
         {
             _todoItemService = todoItemService;
             _dateTimeService = dateTimeService;
+
             AddTodoCommand = new ActionCommand(AddNewTodo, CanAddNewTodo);
             DeleteTodoCommand = new ActionCommand(DeleteSelectedTodo, CanDeleteTodo);
+            ShowAllCommand = new ActionCommand(ShowAll, CanShowAll);
+            ShowActiveCommand = new ActionCommand(ShowActive, CanShowActive);
+            ShowDoneCommand = new ActionCommand(ShowDone, CanShowDone);
+
             TodoItems = new ObservableCollection<TodoItemViewModel>();
             var todoItemModels = _todoItemService.ReadTodos();
-            NewTodoName = NEW_TODO;
 
             foreach (var item in todoItemModels)
             {
                 TodoItems.Add(CreateTodoViewModel(item));
             }
 
+            NewTodoName = NEW_TODO;
+        }
+
+        private bool CanShowDone()
+        {
+            return true;
+        }
+        private void ShowDone()
+        {
+
+            TodoItems = new ObservableCollection<TodoItemViewModel>(_todoItemService.ReadTodos()
+                .Where(item => item.IsDone)
+                .Select(CreateTodoViewModel));
+
+        }
+
+        private bool CanShowActive()
+        {
+            return true;
+        }
+        private void ShowActive()
+        {
+            TodoItems = new ObservableCollection<TodoItemViewModel>(_todoItemService.ReadTodos()
+                .Where(item => !item.IsDone)
+                .Select(CreateTodoViewModel));
+        }
+
+        private bool CanShowAll()
+        {
+            return true;
+        }
+        private void ShowAll()
+        {
+            TodoItems = new ObservableCollection<TodoItemViewModel>(_todoItemService.ReadTodos()
+                .Select(CreateTodoViewModel));
         }
 
         private TodoItemViewModel CreateTodoViewModel(TodoItem todoItem)
@@ -66,9 +118,8 @@ namespace ToDo.ViewModels
 
         private bool CanAddNewTodo()
         {
-            return (!String.IsNullOrWhiteSpace(NewTodoName)) &! String.Equals(NewTodoName, NEW_TODO);
+            return (!String.IsNullOrWhiteSpace(NewTodoName)) & !String.Equals(NewTodoName, NEW_TODO);
         }
-
         private void AddNewTodo()
         {
             if (!String.IsNullOrWhiteSpace(NewTodoName))
@@ -92,7 +143,6 @@ namespace ToDo.ViewModels
         {
             return SelectedTodoItem != null;
         }
-
         private void DeleteSelectedTodo()
         {
             if (SelectedTodoItem != null)

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         
         mc:Ignorable="d"
-        Background="{StaticResource BackgroundMainWindow}"
+        Background="{StaticResource BackgroundMainWindowDark}"
         Title="ToDo - Listen App" Height="450" Width="600">
 
     <Window.Resources> 
@@ -59,10 +59,26 @@
             </StackPanel>
         </StackPanel>
 
-        <TextBlock Text="ToDo`s"
-                   Style="{StaticResource StyleHeader}"
-                   Margin="10,0,0,5"
-                   Grid.Row="1"/>
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="1"
+                    Margin="10,0,0,5">
+            <TextBlock Text="ToDo`s"
+                       Style="{StaticResource StyleHeader}"
+                        VerticalAlignment="Bottom"/>
+            <Button Style="{StaticResource StyleButtonMaterialDesign}"
+                    Margin="48,0,0,0"
+                    Content="Alle anzeigen"
+                    Command="{Binding ShowAllCommand}"
+                    />
+            <Button Style="{StaticResource StyleButtonMaterialDesign}"
+                    Margin="5,0,0,0"
+                    Content="Aktive anzeigen"
+                    Command="{Binding ShowActiveCommand}"/>
+            <Button Style="{StaticResource StyleButtonMaterialDesign}"
+                    Margin="5,0,0,0"
+                    Content="Erledigte anzeigen" 
+                    Command="{Binding ShowDoneCommand}"/>
+        </StackPanel>
         <StackPanel Orientation="Horizontal"
                     Margin="10,0,0,0"
                     Grid.Row="2">

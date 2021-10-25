@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
 
-    <SolidColorBrush x:Key="BackgroundMainWindow" Color="#FF373737" />
+    <SolidColorBrush x:Key="BackgroundMainWindowWhite" Color="White" />
+    <SolidColorBrush x:Key="BackgroundMainWindowDark" Color="#FF373737" />
     <SolidColorBrush x:Key="BackgroundListBox" Color="#FF484545" />
     <SolidColorBrush x:Key="ForegroundLixtBox" Color="#FF81EDD7" />
     <SolidColorBrush x:Key="BackgroundButton" Color="#11EE88" />

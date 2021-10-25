@@ -99,6 +99,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\ActionCommand.cs" />
+    <Compile Include="Converters\TextToUpperCaseConverter.cs" />
     <Compile Include="Models\TodoItem.cs" />
     <Compile Include="Services\DateTimeService.cs" />
     <Compile Include="Services\IDateTimeService.cs" />
