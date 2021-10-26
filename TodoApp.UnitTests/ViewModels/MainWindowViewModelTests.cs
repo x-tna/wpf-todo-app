@@ -103,7 +103,7 @@ namespace TodoApp.UnitTests.ViewModels
             var viewModel = CreateSut();
             var todoItem = new TodoItem();
             var allTodos = new ObservableCollection<TodoItemViewModel>();
-            var todoItemModel = new TodoItemViewModel(todoItem, null, allTodos);
+            var todoItemModel = new TodoItemViewModel(todoItem, null, allTodos, null);
             viewModel.SelectedTodoItem = todoItemModel;
 
             // Act
@@ -136,7 +136,7 @@ namespace TodoApp.UnitTests.ViewModels
             var viewModel = CreateSut();
             var todoItem = new TodoItem();
             var allTodos = new ObservableCollection<TodoItemViewModel>();
-            viewModel.TodoItems.Add(new TodoItemViewModel(todoItem, null, allTodos) { Name = "Staubsaugen" });
+            viewModel.TodoItems.Add(new TodoItemViewModel(todoItem, null, allTodos, viewModel ) { Name = "Staubsaugen" });
             var selectedItem = viewModel.TodoItems[0];
             viewModel.SelectedTodoItem = selectedItem;
 

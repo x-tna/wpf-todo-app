@@ -34,6 +34,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Vertical"
@@ -97,7 +98,13 @@
                         Content="Entfernen"
                         Command="{Binding DeleteTodoCommand}"/>
         </StackPanel>
-        
+
+            <TextBlock Text="{Binding NumberOfTodaysActiveTodos, StringFormat= Anzahl der noch nicht erledigten Todos von heute: {0} }"
+                       Style="{StaticResource StyleAdditionalText}"
+                       Grid.Row="3"
+                       Margin="10,10,0,15"/>
+
+
 
     </Grid>
 </Window>

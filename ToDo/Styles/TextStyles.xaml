@@ -20,5 +20,11 @@
         <Setter Property="Foreground" Value="{StaticResource ForegroundLixtBox}" />
         <Setter Property="FontWeight" Value="DemiBold" />
     </Style>
-    
+
+    <Style x:Key="StyleAdditionalText" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="10" />
+    </Style>
+
 </ResourceDictionary>
+    

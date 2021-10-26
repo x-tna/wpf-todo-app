@@ -90,7 +90,8 @@ namespace TodoApp.UnitTests.ViewModels
             }
             var todoItem = new TodoItem();
             var allTodos = new ObservableCollection<TodoItemViewModel>();
-            return new TodoItemViewModel(todoItem, fakeTodoService, allTodos);
+            var mainWindowViewModel = new MainWindowViewModel(fakeTodoService, null);
+            return new TodoItemViewModel(todoItem, fakeTodoService, allTodos, mainWindowViewModel);
         }
     }
 }

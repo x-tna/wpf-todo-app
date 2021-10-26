@@ -10,7 +10,10 @@ namespace ToDo.ViewModels
     class TodoItemViewModel : ViewModelBase
     {
         private readonly ITodoItemService _todoitemService;
+        private readonly MainWindowViewModel mainWindowViewModel;
         private readonly IEnumerable<TodoItem> _allTodos;
+
+        public string TodaysTodos { get; set; }
 
         public string Name
         {
@@ -31,6 +34,9 @@ namespace ToDo.ViewModels
             {
                 TodoItem.IsDone = value;
                 _todoitemService.WriteTodos(_allTodos);
+
+                mainWindowViewModel.CountTodaysActiveTodos();
+                
             }
 
         }
@@ -40,11 +46,14 @@ namespace ToDo.ViewModels
         public TodoItemViewModel(
             TodoItem todoitem,
             ITodoItemService todoitemService,
-            IEnumerable<TodoItemViewModel> allTodos)
+            IEnumerable<TodoItemViewModel> allTodos,
+            MainWindowViewModel mainWindowViewModel)
         {
             TodoItem = todoitem;
             _todoitemService = todoitemService;
+            this.mainWindowViewModel = mainWindowViewModel;
             _allTodos = allTodos.Select(vm => vm.TodoItem);
+
         }
     }
 }

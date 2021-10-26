@@ -47,7 +47,7 @@
         <Setter Property="Height" Value="26" />
         <Setter Property="FontWeight" Value="DemiBold" />
         <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="Foreground" Value="#FF6200EE"/>
+        <Setter Property="Foreground" Value="{StaticResource ForegroundLixtBox}"/>
         <Setter Property="Background" Value="{StaticResource BackgroundMainWindowDark}"/>
         <Setter Property="FontSize" Value="10"/>
         <Setter Property="Template">
@@ -58,19 +58,19 @@
                              BorderThickness="0"
                              Padding="6,0,6,0"
                              Background="{TemplateBinding Background}">
-                        <Grid>
-                            <TextBlock Text="{TemplateBinding Content, Converter={StaticResource TextToUpperCaseConverter}}"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Center"
-                                       TextWrapping="WrapWithOverflow"/>
-                        </Grid>
+
+                    <TextBlock Text="{TemplateBinding Content, Converter={StaticResource TextToUpperCaseConverter}}"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                TextWrapping="WrapWithOverflow"/>
+
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsPressed" Value="true">
-                            <Setter TargetName="Border" Property="Background" Value="#FFDAC3F8" />
+                            <Setter TargetName="Border" Property="Background" Value="DimGray" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#FFF4F0F9" />
+                            <Setter Property="Background" Value="SlateGray" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

@@ -22,6 +22,7 @@ namespace ToDo.ViewModels
                 _newTodoName = value;
                 AddTodoCommand?.RaisCanExecuteChanged();
                 RaisePropertyChanged(nameof(NewTodoName));
+
             }
         }
 
@@ -33,6 +34,7 @@ namespace ToDo.ViewModels
             {
                 _selectedTodoItem = value;
                 DeleteTodoCommand?.RaisCanExecuteChanged();
+
             }
         }
 
@@ -44,14 +46,30 @@ namespace ToDo.ViewModels
             {
                 _todoItems = value;
                 RaisePropertyChanged(nameof(TodoItems));
+
             }
         }
+
+
+        private int _numberOfTodaysActiveTodos;
+        public int NumberOfTodaysActiveTodos
+        {
+            get { return _numberOfTodaysActiveTodos; }
+            set
+            {
+                _numberOfTodaysActiveTodos = value;
+                RaisePropertyChanged(nameof(NumberOfTodaysActiveTodos));
+
+            }
+        }
+
 
         public ActionCommand AddTodoCommand { get; }
         public ActionCommand DeleteTodoCommand { get; }
         public ActionCommand ShowAllCommand { get; }
         public ActionCommand ShowActiveCommand { get; }
         public ActionCommand ShowDoneCommand { get; }
+
 
         public MainWindowViewModel(
             ITodoItemService todoItemService,
@@ -74,6 +92,8 @@ namespace ToDo.ViewModels
                 TodoItems.Add(CreateTodoViewModel(item));
             }
 
+            CountTodaysActiveTodos();
+
             NewTodoName = NEW_TODO;
         }
 
@@ -84,7 +104,8 @@ namespace ToDo.ViewModels
         private void ShowDone()
         {
 
-            TodoItems = new ObservableCollection<TodoItemViewModel>(_todoItemService.ReadTodos()
+            TodoItems = new ObservableCollection<TodoItemViewModel>(_todoItemService
+                .ReadTodos()
                 .Where(item => item.IsDone)
                 .Select(CreateTodoViewModel));
 
@@ -96,7 +117,8 @@ namespace ToDo.ViewModels
         }
         private void ShowActive()
         {
-            TodoItems = new ObservableCollection<TodoItemViewModel>(_todoItemService.ReadTodos()
+            TodoItems = new ObservableCollection<TodoItemViewModel>(_todoItemService
+                .ReadTodos()
                 .Where(item => !item.IsDone)
                 .Select(CreateTodoViewModel));
         }
@@ -107,13 +129,14 @@ namespace ToDo.ViewModels
         }
         private void ShowAll()
         {
-            TodoItems = new ObservableCollection<TodoItemViewModel>(_todoItemService.ReadTodos()
+            TodoItems = new ObservableCollection<TodoItemViewModel>(_todoItemService
+                .ReadTodos()
                 .Select(CreateTodoViewModel));
         }
 
         private TodoItemViewModel CreateTodoViewModel(TodoItem todoItem)
         {
-            return new TodoItemViewModel(todoItem, _todoItemService, TodoItems);
+            return new TodoItemViewModel(todoItem, _todoItemService, TodoItems, this);
         }
 
         private bool CanAddNewTodo()
@@ -135,6 +158,8 @@ namespace ToDo.ViewModels
 
                 _todoItemService.WriteTodos(TodoItems.Select(vm => vm.TodoItem));
 
+                CountTodaysActiveTodos();
+
                 NewTodoName = NEW_TODO;
             }
         }
@@ -151,8 +176,31 @@ namespace ToDo.ViewModels
 
                 _todoItemService.WriteTodos(TodoItems.Select(vm => vm.TodoItem));
 
+                CountTodaysActiveTodos();
+
             }
         }
+
+        public void CountTodaysActiveTodos()
+        {
+            NumberOfTodaysActiveTodos = TodoItems
+                .Where(TodoItemIsActive)
+                .Where(TodoItemIsCreatedToday)
+                .Count();
+
+            
+        }
+
+        private bool TodoItemIsActive (TodoItemViewModel todoitem)
+        {
+            return !todoitem.IsDone;
+        }
+
+        private bool TodoItemIsCreatedToday (TodoItemViewModel todoitem)
+        {
+            return todoitem.TimeStamp.Date == DateTime.Now.Date;
+        }
+
 
     }
 }
