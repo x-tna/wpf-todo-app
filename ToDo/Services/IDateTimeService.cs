@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ToDo.Services
 {
-    interface IDateTimeService
+    public interface IDateTimeService
     {
         DateTime Now();
     }

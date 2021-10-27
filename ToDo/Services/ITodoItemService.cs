@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ToDo.Services
 {
-    interface ITodoItemService
+    public interface ITodoItemService
     {
         IEnumerable<TodoItem> ReadTodos();
 

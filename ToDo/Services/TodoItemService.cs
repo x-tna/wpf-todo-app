@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ToDo.Services
 {
-    class TodoItemService : ITodoItemService
+    public class TodoItemService : ITodoItemService
     {
         string path = @"C:\01_DATA\Temp\ToDoListe.txt";
 

@@ -99,12 +99,10 @@ namespace TodoApp.UnitTests.ViewModels
         public void DeleteTodo_ItemIsSelected_DeleteButtonCanBeExecuted()
         {
             // Arrange
-            
+
             var viewModel = CreateSut();
-            var todoItem = new TodoItem();
-            var allTodos = new ObservableCollection<TodoItemViewModel>();
-            var todoItemModel = new TodoItemViewModel(todoItem, null, allTodos, null);
-            viewModel.SelectedTodoItem = todoItemModel;
+            var todoItemViewModel = CreateSut2();
+            viewModel.SelectedTodoItem = todoItemViewModel;
 
             // Act
             var canExecute = viewModel.DeleteTodoCommand.CanExecute(null);
@@ -134,9 +132,10 @@ namespace TodoApp.UnitTests.ViewModels
         {
             // Arrange
             var viewModel = CreateSut();
-            var todoItem = new TodoItem();
-            var allTodos = new ObservableCollection<TodoItemViewModel>();
-            viewModel.TodoItems.Add(new TodoItemViewModel(todoItem, null, allTodos, viewModel ) { Name = "Staubsaugen" });
+            var todoItemViewModel = CreateSut2();
+            todoItemViewModel.Name = "Neues Todo";
+
+            viewModel.TodoItems.Add(todoItemViewModel);
             var selectedItem = viewModel.TodoItems[0];
             viewModel.SelectedTodoItem = selectedItem;
 
@@ -164,14 +163,78 @@ namespace TodoApp.UnitTests.ViewModels
 
         }
 
- 
+
+        [TestMethod]
+        public void CountTodaysActiveTodos_TodaysTodoIsActive_NumberOfTodaysActiveTodosIsOne()
+        {
+            // Arrange
+            var viewModel = CreateSut();
+            var todoItemViewModel = CreateSut2();
+            todoItemViewModel.Name = "Neues Todo isActive";
+            todoItemViewModel.TimeStamp = DateTime.Now;
+            todoItemViewModel.IsDone = false;
+
+            viewModel.TodoItems.Add(todoItemViewModel);
+            // Act
+            viewModel.CountTodaysActiveTodos();
+            // Assert
+            viewModel.NumberOfTodaysActiveTodos.ShouldBe(1);
+        }
+
+        [TestMethod]
+        public void CountTodaysActiveTodos_TodaysTodoIsDone_NumberOfTodaysActiveTodosIsNull()
+        {
+            // Arrange
+            var viewModel = CreateSut();
+            var todoItemViewModel = CreateSut2();
+            todoItemViewModel.Name = "Neues Todo isDone";
+            todoItemViewModel.TimeStamp = DateTime.Now;
+            todoItemViewModel.IsDone = true;
+
+            viewModel.TodoItems.Add(todoItemViewModel);
+            // Act
+            viewModel.CountTodaysActiveTodos();
+            // Assert
+            viewModel.NumberOfTodaysActiveTodos.ShouldBe(0);
+        }
+
+        [TestMethod]
+        public void CountTodaysActiveTodos_NoTodaysTodo_NumberOfTodaysActiveTodosIsNull()
+        {
+            // Arrange
+            var viewModel = CreateSut();
+            var todoItemViewModel = CreateSut2();
+            todoItemViewModel.Name = "Todo von Gestern";
+            todoItemViewModel.TimeStamp = DateTime.Today.AddDays(-1);
+            todoItemViewModel.IsDone = false;
+
+            viewModel.TodoItems.Add(todoItemViewModel);
+            // Act
+            viewModel.CountTodaysActiveTodos();
+            // Assert
+            viewModel.NumberOfTodaysActiveTodos.ShouldBe(0);
+        }
+
 
         private MainWindowViewModel CreateSut(DateTime FakeNow = default)
         {
             var dateTimeService = new FakeTimeStampService();
             dateTimeService.FakeNow = FakeNow;
+
             return new MainWindowViewModel(new FakeTodoService(), dateTimeService);
-            
+        }
+
+
+        private TodoItemViewModel CreateSut2(FakeTodoService fakeTodoService = null)
+        {
+            if (fakeTodoService == null)
+            {
+                fakeTodoService = new FakeTodoService();
+            }
+            var todoItem = new TodoItem();
+            var allTodos = new ObservableCollection<TodoItemViewModel>();
+            var mainWindowViewModel = new MainWindowViewModel(fakeTodoService, null);
+            return new TodoItemViewModel(todoItem, fakeTodoService, allTodos, mainWindowViewModel);
         }
     }
 }

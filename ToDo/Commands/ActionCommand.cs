@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace ToDo.Commands
 {
-    class ActionCommand : ICommand
+    public class ActionCommand : ICommand
     {
         private Action _execute;
         private Func<bool> _canExecute;

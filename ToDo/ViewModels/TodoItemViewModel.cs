@@ -7,7 +7,7 @@ using ToDo.Services;
 
 namespace ToDo.ViewModels
 {
-    class TodoItemViewModel : ViewModelBase
+    public class TodoItemViewModel : ViewModelBase
     {
         private readonly ITodoItemService _todoitemService;
         private readonly MainWindowViewModel mainWindowViewModel;

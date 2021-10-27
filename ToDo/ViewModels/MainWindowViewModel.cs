@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using ToDo.Commands;
@@ -6,7 +8,40 @@ using ToDo.Services;
 
 namespace ToDo.ViewModels
 {
-    class MainWindowViewModel : ViewModelBase
+    public static class ExtensionTest
+    {
+        public static IEnumerable<TodoItem> Where2<TodoItem>(this IEnumerable<TodoItem> todoitems, Func<TodoItem,bool> FunctionTrue)
+        {
+
+            var result = new List<TodoItem>();
+
+            foreach (var item in todoitems)
+            {
+                if(FunctionTrue(item))
+                {
+                    result.Add(item);
+                }
+            }
+
+            return result;
+
+        }
+
+        public static IEnumerable<TodoItemViewModel> Select2<TodoItem, TodoItemiewModel>(this IEnumerable<TodoItem> todoitems, Func<TodoItem, TodoItemViewModel> selector)
+        {
+            var result = new List<TodoItemViewModel>();
+
+            foreach (var item in todoitems)
+            {
+                result.Add(selector(item));
+            }
+
+            return result;
+        }
+
+    }
+
+    public class MainWindowViewModel : ViewModelBase
     {
         private const string NEW_TODO = "Neues Todo";
 
@@ -87,7 +122,7 @@ namespace ToDo.ViewModels
             TodoItems = new ObservableCollection<TodoItemViewModel>();
             var todoItemModels = _todoItemService.ReadTodos();
 
-            foreach (var item in todoItemModels)
+            foreach (var item in todoItemModels.OrderBy(item => item))
             {
                 TodoItems.Add(CreateTodoViewModel(item));
             }
@@ -106,7 +141,7 @@ namespace ToDo.ViewModels
 
             TodoItems = new ObservableCollection<TodoItemViewModel>(_todoItemService
                 .ReadTodos()
-                .Where(item => item.IsDone)
+                .Where2(item => item.IsDone)
                 .Select(CreateTodoViewModel));
 
         }
@@ -120,7 +155,7 @@ namespace ToDo.ViewModels
             TodoItems = new ObservableCollection<TodoItemViewModel>(_todoItemService
                 .ReadTodos()
                 .Where(item => !item.IsDone)
-                .Select(CreateTodoViewModel));
+                .Select(CreateTodoViewModel)); ;
         }
 
         private bool CanShowAll()
@@ -187,8 +222,6 @@ namespace ToDo.ViewModels
                 .Where(TodoItemIsActive)
                 .Where(TodoItemIsCreatedToday)
                 .Count();
-
-            
         }
 
         private bool TodoItemIsActive (TodoItemViewModel todoitem)
