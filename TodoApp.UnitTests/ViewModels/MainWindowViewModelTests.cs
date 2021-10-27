@@ -215,6 +215,63 @@ namespace TodoApp.UnitTests.ViewModels
             viewModel.NumberOfTodaysActiveTodos.ShouldBe(0);
         }
 
+        [TestMethod]
+        public void NumberOfTodaysActiveTodos_AddTodo_NumberIsOne()
+        {
+            // Arrange
+            var FakeTimestamp = DateTime.Now;
+            var viewModel = CreateSut(FakeTimestamp);
+
+            viewModel.NewTodoName = "Neues Todo...";
+
+            // Act
+            viewModel.AddTodoCommand.Execute(null);
+
+            // Assert
+            viewModel.NumberOfTodaysActiveTodos.ShouldBe(1);
+        }
+
+        [TestMethod]
+        public void NumberOfTodaysActiveTodos_DeleteTodo_NumberIsNull()
+        {
+            // Arrange
+
+            var FakeTimestamp = DateTime.Now;
+            var viewModel = CreateSut(FakeTimestamp);
+
+            viewModel.NewTodoName = "Neues Todo wird wieder gelöscht";
+
+            viewModel.AddTodoCommand.Execute(null);
+
+            var selectedItem = viewModel.TodoItems[0];
+            viewModel.SelectedTodoItem = selectedItem;
+
+            // Act
+            viewModel.DeleteTodoCommand.Execute(null);
+
+            // Assert
+            viewModel.NumberOfTodaysActiveTodos.ShouldBe(0);
+        }
+
+        [TestMethod]
+        public void NumberOfTodaysActiveTodos_TodaysTodoIsDone_NumberIsNull()
+        {
+            // Arrange
+            var FakeTimestamp = DateTime.Now;
+            var viewModel = CreateSut(FakeTimestamp);
+            viewModel.NewTodoName = "Neues Todo wird gecheckt";
+
+            viewModel.AddTodoCommand.Execute(null);
+
+            // Act
+            viewModel.TodoItems[0].IsDone = true;
+
+            // Assert
+            viewModel.NumberOfTodaysActiveTodos.ShouldBe(0);
+
+
+        }
+
 
         private MainWindowViewModel CreateSut(DateTime FakeNow = default)
         {
