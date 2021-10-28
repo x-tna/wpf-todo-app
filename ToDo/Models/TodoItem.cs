@@ -14,11 +14,11 @@ namespace ToDo
 
         public int CompareTo(TodoItem other)
         {
-            if (Name.Length > other.Name.Length)
+            if (Timestamp < other.Timestamp)
             {
                 return 1;
             }
-            else if (Name.Length < other.Name.Length)
+            else if (Timestamp > other.Timestamp)
             {
                 return -1;
             }
@@ -26,8 +26,11 @@ namespace ToDo
             {
                 return 0;
             }
-
         }
+
+
+
+        
 
     }
 

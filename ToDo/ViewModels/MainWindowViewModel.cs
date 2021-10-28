@@ -27,7 +27,7 @@ namespace ToDo.ViewModels
 
         }
 
-        public static IEnumerable<TodoItemViewModel> Select2<TodoItem, TodoItemiewModel>(this IEnumerable<TodoItem> todoitems, Func<TodoItem, TodoItemViewModel> selector)
+        public static IEnumerable<TodoItemViewModel> Select2<TodoItem, TodoItemViewModel>(this IEnumerable<TodoItem> todoitems, Func<TodoItem, TodoItemViewModel> selector)
         {
             var result = new List<TodoItemViewModel>();
 
@@ -122,7 +122,7 @@ namespace ToDo.ViewModels
             TodoItems = new ObservableCollection<TodoItemViewModel>();
             var todoItemModels = _todoItemService.ReadTodos();
 
-            foreach (var item in todoItemModels.OrderBy(item => item))
+            foreach (var item in todoItemModels.OrderBy(item => item.IsDone).ThenBy(item => item.Timestamp))
             {
                 TodoItems.Add(CreateTodoViewModel(item));
             }
@@ -141,7 +141,7 @@ namespace ToDo.ViewModels
 
             TodoItems = new ObservableCollection<TodoItemViewModel>(_todoItemService
                 .ReadTodos()
-                .Where2(item => item.IsDone)
+                .Where(item => item.IsDone)
                 .Select(CreateTodoViewModel));
 
         }
@@ -155,7 +155,7 @@ namespace ToDo.ViewModels
             TodoItems = new ObservableCollection<TodoItemViewModel>(_todoItemService
                 .ReadTodos()
                 .Where(item => !item.IsDone)
-                .Select(CreateTodoViewModel)); ;
+                .Select(CreateTodoViewModel));
         }
 
         private bool CanShowAll()
@@ -189,6 +189,7 @@ namespace ToDo.ViewModels
                     IsDone = false,
                     Timestamp = _dateTimeService.Now(),
                 };
+
                 TodoItems.Add(CreateTodoViewModel(newItem));
 
                 _todoItemService.WriteTodos(TodoItems.Select(vm => vm.TodoItem));
