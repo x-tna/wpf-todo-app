@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="ToDo.Controls.TextBoxButtonWithHeaderControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ToDo.Controls"
+             mc:Ignorable="d" 
+             x:Name="ControlRoot"
+             Background="{StaticResource BackgroundMainWindowDark}">
+    <Grid>
+        <StackPanel Orientation="Vertical"
+                    Margin="10,0,0,16"
+                    Grid.Row="0">
+
+            <TextBlock Text="{Binding Header, ElementName=ControlRoot}"
+                       Style="{StaticResource StyleHeader}"
+                       Margin="0,10,0,5"/>
+            <StackPanel Orientation="Horizontal" 
+                        Height="Auto"
+                        VerticalAlignment="Top">
+                <TextBox Name="ToDoAdd"  
+                         Width="400"
+                         VerticalAlignment="Center"
+                         Text="{Binding TextBoxText,ElementName=ControlRoot, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource StyleNewTodoName}"/>
+                <Button Margin="10,0,0,0"
+                        Name="ButtonAdd"
+                        Style="{StaticResource ResourceKey=StyleButton}"
+                        Content="{Binding ButtonContent, ElementName=ControlRoot}"
+                        Command="{Binding ButtonCommand, ElementName=ControlRoot}"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>
