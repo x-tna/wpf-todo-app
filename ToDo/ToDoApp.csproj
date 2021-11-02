@@ -99,8 +99,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\ActionCommand.cs" />
-    <Compile Include="Controls\TextBoxButtonWithHeaderControl.xaml.cs">
-      <DependentUpon>TextBoxButtonWithHeaderControl.xaml</DependentUpon>
+    <Compile Include="Controls\SampleCustomControl.cs" />
+    <Compile Include="Controls\SampleUserControl.xaml.cs">
+      <DependentUpon>SampleUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\TextToUpperCaseConverter.cs" />
     <Compile Include="Models\TodoItem.cs" />
@@ -109,11 +110,15 @@
     <Compile Include="Services\ITodoItemService.cs" />
     <Compile Include="Services\TodoItemService.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Page Include="Controls\TextBoxButtonWithHeaderControl.xaml">
+    <Page Include="Controls\SampleUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resourcen\Converters.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resourcen\SampleCustomControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

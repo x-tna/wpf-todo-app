@@ -1,0 +1,72 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:control="clr-namespace:ToDo.Controls">
+
+    <Style TargetType="control:SampleCustomControl">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="control:SampleCustomControl">
+                    <Grid>
+                        <StackPanel Orientation="Vertical"
+                                    Margin="10,0,0,16"
+                                    Grid.Row="0">
+                            <TextBlock Text="{TemplateBinding Header}"
+                                   Style="{StaticResource StyleHeader}"
+                                   Margin="0,10,0,5"/>
+                            <StackPanel Orientation="Horizontal" 
+                                        Height="Auto"
+                                        VerticalAlignment="Top">
+                                <TextBox Name="ToDoAdd"  
+                                         Width="400"
+                                         VerticalAlignment="Center"
+                                         Text="{Binding TextBoxText, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Style="{StaticResource StyleNewTodoName}"/>
+                                <Button Margin="10,0,0,0"
+                                         Name="ButtonAdd"
+                                        Style="{StaticResource ResourceKey=StyleButton}"
+                                        Content="{TemplateBinding ButtonContent}"
+                                        Command="{TemplateBinding ButtonCommand}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="control:SampleCustomControl" x:Key="SampleCustomControlStyle2">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="control:SampleCustomControl">
+                    <Grid>
+                        <StackPanel Orientation="Vertical"
+                                    Margin="10,0,0,16"
+                                    Grid.Row="0">
+                            <TextBlock Text="{TemplateBinding Header}"
+                                   Style="{StaticResource StyleHeader}"
+                                       Foreground="DeepPink"
+                                   Margin="0,10,0,5"/>
+                            <StackPanel Orientation="Horizontal" 
+                                        Height="Auto"
+                                        VerticalAlignment="Top">
+                                <TextBox Name="ToDoAdd"  
+                                         Width="400"
+                                         VerticalAlignment="Center"
+                                         Text="{Binding TextBoxText, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Style="{StaticResource StyleNewTodoName}"
+                                         Background="Yellow"/>
+                                <Button Margin="10,0,0,0"
+                                         Name="ButtonAdd"
+                                        Style="{StaticResource ResourceKey=StyleButton}"
+                                        Content="{TemplateBinding ButtonContent}"
+                                        Command="{TemplateBinding ButtonCommand}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+</ResourceDictionary>

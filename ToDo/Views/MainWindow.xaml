@@ -37,11 +37,20 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <controls:TextBoxButtonWithHeaderControl 
-            Header="Todo hinzufügen"
+        <StackPanel Orientation="Vertical">
+            <!--<controls:SampleUserControl 
+            HeaderUC="Todo hinzufügen"
+            TextBoxTextUC="{Binding NewTodoName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            ButtonContentUC="Add"
+            ButtonCommandUC="{Binding AddTodoCommand}"/>-->
+
+            <controls:SampleCustomControl Style="{StaticResource SampleCustomControlStyle2}"
+            Header="ToDo hinzufügen"
             TextBoxText="{Binding NewTodoName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            ButtonContent="Add"
+            ButtonContent="Hinzufügen"
             ButtonCommand="{Binding AddTodoCommand}"/>
+        </StackPanel>   
+
 
         <StackPanel Orientation="Horizontal"
                     Grid.Row="1"

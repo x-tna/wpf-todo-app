@@ -11,7 +11,8 @@
                 <ResourceDictionary Source="/Resourcen/Converters.xaml" />
                 <ResourceDictionary Source="/Styles/ButtonStyles.xaml" />
                 <ResourceDictionary Source="/Styles/TextStyles.xaml" />
-       
+                <ResourceDictionary Source="/Resourcen/SampleCustomControl.xaml" />
+
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 
