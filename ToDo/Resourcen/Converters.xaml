@@ -6,6 +6,7 @@
     <conv:TodoNameToBrushConverter  x:Key="ToDoNameToBrushConverter" ForegroundLixtBox="{StaticResource ForegroundLixtBox}"/>
     <conv:DateToLongDateConverter x:Key="DateToLongDateConverter" />
     <conv:TextToUpperCaseConverter x:Key="TextToUpperCaseConverter" />
+    <conv:TextToVisibilityConverter x:Key="TextToVisibilityConverter" />
 
 
 </ResourceDictionary>

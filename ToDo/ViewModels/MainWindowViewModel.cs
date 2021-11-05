@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 using ToDo.Commands;
 using ToDo.Services;
 
@@ -44,6 +45,7 @@ namespace ToDo.ViewModels
     public class MainWindowViewModel : ViewModelBase
     {
         private const string NEW_TODO = "Neues Todo";
+        private const string NEW_DESCRIPTION = "Beschreibung";
 
         private readonly ITodoItemService _todoItemService;
         private readonly IDateTimeService _dateTimeService;
@@ -61,15 +63,14 @@ namespace ToDo.ViewModels
             }
         }
 
-        private TodoItemViewModel _selectedTodoItem;
-        public TodoItemViewModel SelectedTodoItem
-        {
-            get { return _selectedTodoItem; }
+        private string _newTodoDescription;
+        public string NewTodoDescription
+        { 
+            get { return _newTodoDescription; }
             set
             {
-                _selectedTodoItem = value;
-                DeleteTodoCommand?.RaisCanExecuteChanged();
-
+                _newTodoDescription = value;
+                RaisePropertyChanged(nameof(NewTodoDescription));
             }
         }
 
@@ -85,8 +86,8 @@ namespace ToDo.ViewModels
             }
         }
 
-
         private int _numberOfTodaysActiveTodos;
+
         public int NumberOfTodaysActiveTodos
         {
             get { return _numberOfTodaysActiveTodos; }
@@ -100,10 +101,10 @@ namespace ToDo.ViewModels
 
 
         public ActionCommand AddTodoCommand { get; }
-        public ActionCommand DeleteTodoCommand { get; }
         public ActionCommand ShowAllCommand { get; }
         public ActionCommand ShowActiveCommand { get; }
         public ActionCommand ShowDoneCommand { get; }
+        public ParameterCommand<TodoItemViewModel> DeleteTodoCommand { get; }
 
 
         public MainWindowViewModel(
@@ -113,11 +114,14 @@ namespace ToDo.ViewModels
             _todoItemService = todoItemService;
             _dateTimeService = dateTimeService;
 
+            
+
             AddTodoCommand = new ActionCommand(AddNewTodo, CanAddNewTodo);
-            DeleteTodoCommand = new ActionCommand(DeleteSelectedTodo, CanDeleteTodo);
             ShowAllCommand = new ActionCommand(ShowAll, CanShowAll);
             ShowActiveCommand = new ActionCommand(ShowActive, CanShowActive);
             ShowDoneCommand = new ActionCommand(ShowDone, CanShowDone);
+
+            DeleteTodoCommand = new ParameterCommand<TodoItemViewModel>(DeleteSelectedTodo, CanDeleteTodo);
 
             TodoItems = new ObservableCollection<TodoItemViewModel>();
             var todoItemModels = _todoItemService.ReadTodos();
@@ -130,6 +134,7 @@ namespace ToDo.ViewModels
             CountTodaysActiveTodos();
 
             NewTodoName = NEW_TODO;
+            NewTodoDescription = NEW_DESCRIPTION;
         }
 
         private bool CanShowDone()
@@ -182,10 +187,15 @@ namespace ToDo.ViewModels
         {
             if (!String.IsNullOrWhiteSpace(NewTodoName))
             {
+                if (NewTodoDescription == NEW_DESCRIPTION)
+                {
+                    NewTodoDescription = string.Empty;
+                }
 
                 var newItem = new TodoItem()
                 {
                     Name = NewTodoName,
+                    Description = NewTodoDescription,
                     IsDone = false,
                     Timestamp = _dateTimeService.Now(),
                 };
@@ -197,24 +207,25 @@ namespace ToDo.ViewModels
                 CountTodaysActiveTodos();
 
                 NewTodoName = NEW_TODO;
+                NewTodoDescription = NEW_DESCRIPTION;
+                // NewTodoDescription = string.Empty;
             }
         }
 
-        private bool CanDeleteTodo()
+        private bool CanDeleteTodo(TodoItemViewModel todoItem)
         {
-            return SelectedTodoItem != null;
+            return todoItem.IsDone;
         }
-        private void DeleteSelectedTodo()
+        private void DeleteSelectedTodo(TodoItemViewModel todoItem)
         {
-            if (SelectedTodoItem != null)
+            if(todoItem.IsDone)
             {
-                TodoItems.Remove(SelectedTodoItem);
-
+                TodoItems.Remove(todoItem);
                 _todoItemService.WriteTodos(TodoItems.Select(vm => vm.TodoItem));
-
                 CountTodaysActiveTodos();
-
             }
+       
+
         }
 
         public void CountTodaysActiveTodos()
@@ -225,12 +236,12 @@ namespace ToDo.ViewModels
                 .Count();
         }
 
-        private bool TodoItemIsActive (TodoItemViewModel todoitem)
+        private bool TodoItemIsActive(TodoItemViewModel todoitem)
         {
             return !todoitem.IsDone;
         }
 
-        private bool TodoItemIsCreatedToday (TodoItemViewModel todoitem)
+        private bool TodoItemIsCreatedToday(TodoItemViewModel todoitem)
         {
             return todoitem.TimeStamp.Date == DateTime.Now.Date;
         }

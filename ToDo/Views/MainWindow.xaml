@@ -5,31 +5,86 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:ToDo.Controls"
         mc:Ignorable="d"
+        Name="Window"
         Background="{StaticResource BackgroundMainWindowDark}"
-        Title="ToDo - Listen App" Height="450" Width="600">
+        Title="ToDo - Listen App" Height="600" Width="700">
 
-    <Window.Resources> 
+    <Window.Resources>
         <DataTemplate x:Key="TodoItemTemplate">
-            <StackPanel Orientation="Horizontal">
-                <CheckBox x:Name="Checkbox" IsChecked="{Binding Path=IsDone, Mode=TwoWay}" />
-                <TextBlock x:Name="TextTodoName" Width="180" 
-                           Margin="5,0,0,0" 
-                           Foreground="{Binding Name, Converter={StaticResource ToDoNameToBrushConverter}}"
-                           Text="{Binding Name}" />
-                <TextBlock x:Name="TextTimestamp"
-                           Text="{Binding TimeStamp, Converter={StaticResource DateToLongDateConverter}}" />
-            </StackPanel>
+            <Border BorderBrush="{StaticResource BackgroundMainWindowWhite}"
+                    BorderThickness="1"
+                    Padding="8"
+                    Margin="8"
+                    CornerRadius="2"
+                    Background="{StaticResource BackgroundListBox}">
+                <Border.Effect>
+                    <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="8" Direction="-50" Opacity="0.4"/>
+                </Border.Effect>
+                <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="30"/>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="40" />
+                </Grid.RowDefinitions>
+ 
+                <CheckBox x:Name="Checkbox"
+                          IsChecked="{Binding Path=IsDone, Mode=TwoWay}" 
+                          VerticalAlignment="Center"/>
+                        <TextBlock x:Name="TextTodoName" 
+                            Grid.Column="1" 
+                            FontSize="16"
+                            FontWeight="SemiBold"
+                            VerticalAlignment="Center"
+                            Foreground="{Binding Name, Converter={StaticResource ToDoNameToBrushConverter}}"
+                            Text="{Binding Name}" />
+                        <TextBlock x:Name="TextDescription" 
+                           Grid.Row="1"
+                           Grid.Column="1"
+                           HorizontalAlignment="Stretch"
+                           Margin="0,5,5,0" 
+                           Text="{Binding Description}" 
+                           FontSize="12"
+                           FontWeight="Light"
+                           Foreground="White"
+                           Opacity="10"
+                           TextWrapping="Wrap"
+                           Visibility="{Binding Description, Converter={StaticResource TextToVisibilityConverter}}"/>
+                    <TextBlock x:Name="TextTimestamp"
+                            Grid.Column="2"
+                            HorizontalAlignment="Right"
+                            Foreground="WhiteSmoke"
+                            FontWeight="Light"
+                            Text="{Binding TimeStamp, Converter={StaticResource DateToLongDateConverter}}" />
+                    <Button Grid.Column="2"
+                            Grid.Row="1"
+                            Width="75"
+                            Height="25"
+                            VerticalAlignment="Bottom"
+                            HorizontalAlignment="Right"
+                            Background="Transparent"
+                            Style="{StaticResource StyleButtonDeleteIcon}"
+                            CommandParameter="{Binding}"
+                            Command="{Binding DataContext.DeleteTodoCommand , ElementName=TodoList, IsAsync=True}">
+                        </Button>
+                </Grid>
+            </Border>
+
             <DataTemplate.Triggers>
                 <Trigger SourceName="Checkbox" Property="IsChecked" Value="True">
                     <Setter TargetName="TextTimestamp" Property="TextDecorations" Value="Strikethrough" />
                     <Setter TargetName="TextTodoName" Property="TextDecorations" Value="Strikethrough" />
+                    <Setter TargetName="TextDescription" Property="TextDecorations" Value="Strikethrough" />
                 </Trigger>
             </DataTemplate.Triggers>
         </DataTemplate>
     </Window.Resources>
-    
-    <Grid>
 
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="Auto"/>
@@ -37,22 +92,14 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Vertical">
-            <!--<controls:SampleUserControl 
-            HeaderUC="Todo hinzufügen"
-            TextBoxTextUC="{Binding NewTodoName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            ButtonContentUC="Add"
-            ButtonCommandUC="{Binding AddTodoCommand}"/>-->
-
-            <controls:SampleCustomControl Style="{StaticResource SampleCustomControlStyle2}"
+            <controls:SampleCustomControl
             Header="ToDo hinzufügen"
             TextBoxText="{Binding NewTodoName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            TextBoxDescription="{Binding NewTodoDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             ButtonContent="Hinzufügen"
             ButtonCommand="{Binding AddTodoCommand}"/>
-        </StackPanel>   
 
-
-        <StackPanel Orientation="Horizontal"
+            <StackPanel Orientation="Horizontal"
                     Grid.Row="1"
                     Margin="10,0,0,5">
             <TextBlock Text="ToDo`s"
@@ -72,31 +119,21 @@
                     Content="Erledigte anzeigen" 
                     Command="{Binding ShowDoneCommand}"/>
         </StackPanel>
-        <StackPanel Orientation="Horizontal"
-                    Margin="10,0,0,0"
-                    Grid.Row="2">
-            <ListBox x:Name="TodoList"
-                     ItemsSource="{Binding TodoItems, Mode=TwoWay}"
-                     SelectedItem="{Binding SelectedTodoItem}"
-                     HorizontalAlignment="Left"
-                     Margin="0,0,0,10"
-                     Width="400"
-                     ItemTemplate="{StaticResource TodoItemTemplate}"
-                     Style="{StaticResource StyleListBox}"/>
-            <Button x:Name="ButtonDelete"
-                        Margin="10,0,0,0"
-                        VerticalAlignment="Top" 
-                        Style="{StaticResource ResourceKey=StyleButton}"
-                        Content="Entfernen"
-                        Command="{Binding DeleteTodoCommand}"/>
-        </StackPanel>
+        <ScrollViewer Grid.Row="2"
+                      Margin="0,0,10,0">
+            <ItemsControl x:Name="TodoList"                    
+                    ItemsSource="{Binding TodoItems, Mode=TwoWay}"
+                    HorizontalContentAlignment="Stretch"
+                    Margin="10,0,10,10"
+                    ItemTemplate="{StaticResource TodoItemTemplate}"/>
+        </ScrollViewer>
 
-            <TextBlock Text="{Binding NumberOfTodaysActiveTodos, StringFormat= Anzahl der noch nicht erledigten Todos von heute: {0} }"
-                       Style="{StaticResource StyleAdditionalText}"
-                       Grid.Row="3"
-                       Margin="10,10,0,15"/>
-
-
+        <TextBlock Text="{Binding NumberOfTodaysActiveTodos, StringFormat= Anzahl der noch nicht erledigten Todos von heute: {0} }"
+                   Style="{StaticResource StyleAdditionalText}"
+                   Width="400"
+                   Margin="10"
+                   HorizontalAlignment="Left"
+                   Grid.Row="3"/>
 
     </Grid>
 </Window>

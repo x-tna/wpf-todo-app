@@ -77,5 +77,41 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
+    <Style x:Key="StyleButtonDeleteIcon" TargetType="Button">
+
+        <Setter Property="FontWeight" Value="DemiBold" />
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Background" Value="{StaticResource BackgroundMainWindowDark}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border  x:Name="Border" 
+                             CornerRadius="4"  
+                             BorderThickness="0"
+                             Padding="0,0,5,2" Width="36"
+                             Background="{TemplateBinding Background}">
+                        <Path x:Name="Trash"  
+                              Data="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" 
+                              Fill="White"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter TargetName="Border" Property="Background" Value="Pink" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="SlateGray" />
+                            <Setter TargetName="Trash" Property="Fill" Value="Black" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Trash" Property="Opacity" Value="0.1"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

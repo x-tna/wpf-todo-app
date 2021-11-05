@@ -43,7 +43,7 @@ namespace TodoApp.UnitTests.ViewModels
     public class MainWindowViewModelTests
     {
         [TestMethod]
-        public void AddNewtodo_NewTodoNameIsEmpty_AddTodoButtonCannotBeExecuted()
+        public void CanExecuteAddNewtodo_NewTodoNameIsEmpty_AddTodoButtonCannotBeExecuted()
         {
             // Arrange
             var viewModel = CreateSut();
@@ -56,7 +56,7 @@ namespace TodoApp.UnitTests.ViewModels
         }
 
         [TestMethod]
-        public void AddNewtodo_NewTodoNameIsNotEmpty_AddTodoButtonCanBeExecuted()
+        public void CanExecuteAddNewtodo_NewTodoNameIsNotEmpty_AddTodoButtonCanBeExecuted()
         {
             // Arrange
             var viewModel = CreateSut();
@@ -69,7 +69,7 @@ namespace TodoApp.UnitTests.ViewModels
         }
 
         [TestMethod]
-        public void AddNewTodo_NewTodoNameIsWhitespace_AddTodoButtonCannotBeExecuted()
+        public void CanExecuteAddNewTodo_NewTodoNameIsWhitespace_AddTodoButtonCannotBeExecuted()
         {
             // Arrange
             var viewModel = CreateSut();
@@ -82,13 +82,16 @@ namespace TodoApp.UnitTests.ViewModels
         }
 
         [TestMethod]
-        public void DeleteTodo_ItemIsNotSelected_DeleteButtonCannotBeExecuted()
+        public void CanExecuteDeleteTodo_TodoIsNotDone_DeleteButtonCannotBeExecuted()
         {
             // Arrange
             var viewModel = CreateSut();
-            viewModel.SelectedTodoItem = null;
+            var todoItemViewModel = CreateSutTodoItemViewModel();
+            todoItemViewModel.Name = "Test löschen";
+            todoItemViewModel.IsDone = false;
+            viewModel.TodoItems.Add(todoItemViewModel);
             // Act
-            var canExecute = viewModel.DeleteTodoCommand.CanExecute(null);
+            var canExecute = viewModel.DeleteTodoCommand.CanExecute(todoItemViewModel);
 
             // Assert
             canExecute.ShouldBeFalse();
@@ -96,16 +99,18 @@ namespace TodoApp.UnitTests.ViewModels
         }
 
         [TestMethod]
-        public void DeleteTodo_ItemIsSelected_DeleteButtonCanBeExecuted()
+        public void CanExecuteDeleteTodo_TodoIsDone_DeleteButtonCanBeExecuted()
         {
             // Arrange
 
             var viewModel = CreateSut();
-            var todoItemViewModel = CreateSut2();
-            viewModel.SelectedTodoItem = todoItemViewModel;
+            var todoItemViewModel = CreateSutTodoItemViewModel();
+            todoItemViewModel.Name = "Test löschen";
+            todoItemViewModel.IsDone = true;
+            viewModel.TodoItems.Add(todoItemViewModel);
 
             // Act
-            var canExecute = viewModel.DeleteTodoCommand.CanExecute(null);
+            var canExecute = viewModel.DeleteTodoCommand.CanExecute(todoItemViewModel);
 
             // Assert
             canExecute.ShouldBeTrue();
@@ -128,19 +133,18 @@ namespace TodoApp.UnitTests.ViewModels
         }
 
         [TestMethod]
-        public void ExecuteDeleteItem_ItemIsSelected_TodoItemIsDeleted()
+        public void ExecuteDeleteItem_TodoIsDone_TodoItemIsDeleted()
         {
             // Arrange
             var viewModel = CreateSut();
-            var todoItemViewModel = CreateSut2();
-            todoItemViewModel.Name = "Neues Todo";
+            var todoItemViewModel = CreateSutTodoItemViewModel();
 
+            todoItemViewModel.Name = "Todo löschen";
+            todoItemViewModel.IsDone = true;
             viewModel.TodoItems.Add(todoItemViewModel);
-            var selectedItem = viewModel.TodoItems[0];
-            viewModel.SelectedTodoItem = selectedItem;
 
             // Act
-            viewModel.DeleteTodoCommand.Execute(null);
+            viewModel.DeleteTodoCommand.Execute(todoItemViewModel);
 
             // Assert
             viewModel.TodoItems.ShouldBeEmpty();
@@ -169,7 +173,7 @@ namespace TodoApp.UnitTests.ViewModels
         {
             // Arrange
             var viewModel = CreateSut();
-            var todoItemViewModel = CreateSut2();
+            var todoItemViewModel = CreateSutTodoItemViewModel();
             todoItemViewModel.Name = "Neues Todo isActive";
             todoItemViewModel.TimeStamp = DateTime.Now;
             todoItemViewModel.IsDone = false;
@@ -186,7 +190,7 @@ namespace TodoApp.UnitTests.ViewModels
         {
             // Arrange
             var viewModel = CreateSut();
-            var todoItemViewModel = CreateSut2();
+            var todoItemViewModel = CreateSutTodoItemViewModel();
             todoItemViewModel.Name = "Neues Todo isDone";
             todoItemViewModel.TimeStamp = DateTime.Now;
             todoItemViewModel.IsDone = true;
@@ -203,7 +207,7 @@ namespace TodoApp.UnitTests.ViewModels
         {
             // Arrange
             var viewModel = CreateSut();
-            var todoItemViewModel = CreateSut2();
+            var todoItemViewModel = CreateSutTodoItemViewModel();
             todoItemViewModel.Name = "Todo von Gestern";
             todoItemViewModel.TimeStamp = DateTime.Today.AddDays(-1);
             todoItemViewModel.IsDone = false;
@@ -236,18 +240,17 @@ namespace TodoApp.UnitTests.ViewModels
         {
             // Arrange
 
+            var todoItemViewModel = CreateSutTodoItemViewModel();
             var FakeTimestamp = DateTime.Now;
             var viewModel = CreateSut(FakeTimestamp);
 
-            viewModel.NewTodoName = "Neues Todo wird wieder gelöscht";
+            todoItemViewModel.Name = "Neues Todo wird wieder gelöscht";
+            todoItemViewModel.TimeStamp = DateTime.Now;
 
-            viewModel.AddTodoCommand.Execute(null);
-
-            var selectedItem = viewModel.TodoItems[0];
-            viewModel.SelectedTodoItem = selectedItem;
+            viewModel.TodoItems.Add(todoItemViewModel);
 
             // Act
-            viewModel.DeleteTodoCommand.Execute(null);
+            viewModel.DeleteTodoCommand.Execute(todoItemViewModel);
 
             // Assert
             viewModel.NumberOfTodaysActiveTodos.ShouldBe(0);
@@ -269,6 +272,70 @@ namespace TodoApp.UnitTests.ViewModels
             // Assert
             viewModel.NumberOfTodaysActiveTodos.ShouldBe(0);
 
+        }
+
+        [TestMethod]
+        public void ExecuteAddNewTodo_DescriptionNotEmpty_TodoItemWithDescriptionIsAddedToList()
+        {
+            // Arrange
+            var viewModel = CreateSut();
+            viewModel.NewTodoName = "Staubsaugen";
+            viewModel.NewTodoDescription = "Wohnzimmer";
+
+            // Act
+            viewModel.AddTodoCommand.Execute(null);
+
+            // Assert
+            viewModel.TodoItems.Single().Description.ShouldBe("Wohnzimmer");
+        }
+
+        [TestMethod]
+        public void CanExecuteAddNewtodo_NewTodoDescriptionIsEmpty_AddTodoButtonCanBeExecuted()
+        {
+            // Arrange
+            var viewModel = CreateSut();
+            viewModel.NewTodoName = "Test Beschreibung";
+            viewModel.NewTodoDescription = "";
+            // Act
+            var canExecute = viewModel.AddTodoCommand.CanExecute(null);
+
+            // Assert
+            canExecute.ShouldBeTrue();
+        }
+
+        [TestMethod]
+        public void CanExecuteDeleteTodo_ParameterIsNull_DeleteButtonCanNotBeExecuted()
+        {
+            // Arrange
+            var viewModel = CreateSut();
+            var todoItemViewModel = CreateSutTodoItemViewModel();
+            todoItemViewModel.Name = "Todo Parameter";
+            viewModel.TodoItems.Add(todoItemViewModel);
+
+            // Act
+            var canExecute = viewModel.DeleteTodoCommand.CanExecute(null);
+
+            // Assert
+            canExecute.ShouldBeFalse();
+
+        }
+
+        [TestMethod]
+        public void CanExecuteDeleteTodo_ParameterIsDifferent_DeleteButtonCanNotBeExecuted()
+        {
+            // Arrange
+            var viewModel = CreateSut();
+            var todoItemViewModel = CreateSutTodoItemViewModel();
+            todoItemViewModel.Name = "Todo Parameter";
+            viewModel.TodoItems.Add(todoItemViewModel);
+
+            var differentParam = "different Param";
+
+            // Act
+            var canExecute = viewModel.DeleteTodoCommand.CanExecute(differentParam);
+
+            // Assert
+            canExecute.ShouldBeFalse();
 
         }
 
@@ -282,7 +349,7 @@ namespace TodoApp.UnitTests.ViewModels
         }
 
 
-        private TodoItemViewModel CreateSut2(FakeTodoService fakeTodoService = null)
+        private TodoItemViewModel CreateSutTodoItemViewModel(FakeTodoService fakeTodoService = null)
         {
             if (fakeTodoService == null)
             {

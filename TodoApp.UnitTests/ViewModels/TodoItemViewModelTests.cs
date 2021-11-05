@@ -30,7 +30,7 @@ namespace TodoApp.UnitTests.ViewModels
         }
 
         [TestMethod]
-        public void Datum_DatumIsTheSameAsInModel()
+        public void Timestamp_TimestampIsTheSameAsInModel()
         {
             // Arrange
             var viewModel = CreateSut();
@@ -80,7 +80,17 @@ namespace TodoApp.UnitTests.ViewModels
             fakeTodoService.WriteToDosWasCalled.ShouldBeTrue();
         }
 
+        [TestMethod]
+        public void Description_DescriptionIsTheSameAsInModel()
+        {
+            // Arrange
+            var viewModel = CreateSut();
+            // Act
+            viewModel.Description = "Test Description";
+            // Assert
+            viewModel.TodoItem.Description.ShouldBe("Test Description");
 
+        }
 
         private TodoItemViewModel CreateSut(FakeTodoService fakeTodoService = null)
         {

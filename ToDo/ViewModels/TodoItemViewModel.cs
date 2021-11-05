@@ -20,6 +20,11 @@ namespace ToDo.ViewModels
             get { return TodoItem.Name; }
             set { TodoItem.Name = value; }
         }
+        public string Description
+        {
+            get { return TodoItem.Description; }
+            set { TodoItem.Description = value; }
+        }
 
         public DateTime TimeStamp
         {
@@ -36,7 +41,8 @@ namespace ToDo.ViewModels
                 _todoitemService.WriteTodos(_allTodos);
 
                 mainWindowViewModel.CountTodaysActiveTodos();
-                
+                mainWindowViewModel.DeleteTodoCommand?.RaisCanExecuteChanged();
+
             }
 
         }

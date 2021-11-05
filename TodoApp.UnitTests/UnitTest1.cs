@@ -7,17 +7,6 @@ namespace TodoApp.UnitTests
     [TestClass]
     public class UnitTest1
     {
-        [TestMethod]
-        public void Failing()
-        {
-            throw new Exception("Test fehlgeschlagen");
-        }
-
-        [TestMethod]
-        public void SuccessfulTest()
-        {
-
-        }
 
         [TestMethod]
         public void OnePlusOneIsTwo()

@@ -10,7 +10,6 @@ using System.Windows.Input;
 namespace ToDo.Controls
 {
 
-
     public class SampleCustomControl : Control
     {
         public static readonly DependencyProperty HeaderProperty =
@@ -32,6 +31,11 @@ namespace ToDo.Controls
             DependencyProperty.Register("TextBoxText",
                 typeof(string), typeof(SampleCustomControl),
                 new PropertyMetadata("Neues Todo"));
+
+        public static readonly DependencyProperty TextBoxDescriptionProperty =
+            DependencyProperty.Register("TextBoxDescription", 
+                typeof(string), typeof(SampleCustomControl), 
+                new PropertyMetadata(""));
 
 
         public string Header
@@ -57,10 +61,20 @@ namespace ToDo.Controls
             get { return (string)GetValue(TextBoxTextProperty); }
             set { SetValue(TextBoxTextProperty, value); }
         }
+        public string TextBoxDescription
+        {
+            get { return (string)GetValue(TextBoxDescriptionProperty); }
+            set { SetValue(TextBoxDescriptionProperty, value); }
+        }
 
         static SampleCustomControl()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(SampleCustomControl), new FrameworkPropertyMetadata(typeof(SampleCustomControl)));
         }
+
+
+
+
+
     }
 }
