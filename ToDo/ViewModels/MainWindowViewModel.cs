@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using ToDo.Commands;
+using ToDo.Properties;
 using ToDo.Services;
 
 namespace ToDo.ViewModels
@@ -44,9 +45,6 @@ namespace ToDo.ViewModels
 
     public class MainWindowViewModel : ViewModelBase
     {
-        private const string NEW_TODO = "Neues Todo";
-        private const string NEW_DESCRIPTION = "Beschreibung";
-
         private readonly ITodoItemService _todoItemService;
         private readonly IDateTimeService _dateTimeService;
 
@@ -133,8 +131,8 @@ namespace ToDo.ViewModels
 
             CountTodaysActiveTodos();
 
-            NewTodoName = NEW_TODO;
-            NewTodoDescription = NEW_DESCRIPTION;
+            NewTodoName = Resources.MainWindowVM_NewTodo;
+            NewTodoDescription = Resources.MainWindowVM_NewDescription;
         }
 
         private bool CanShowDone()
@@ -181,13 +179,13 @@ namespace ToDo.ViewModels
 
         private bool CanAddNewTodo()
         {
-            return (!String.IsNullOrWhiteSpace(NewTodoName)) & !String.Equals(NewTodoName, NEW_TODO);
+            return (!String.IsNullOrWhiteSpace(NewTodoName)) & !String.Equals(NewTodoName, Resources.MainWindowVM_NewTodo);
         }
         private void AddNewTodo()
         {
             if (!String.IsNullOrWhiteSpace(NewTodoName))
             {
-                if (NewTodoDescription == NEW_DESCRIPTION)
+                if (NewTodoDescription == Resources.MainWindowVM_NewDescription)
                 {
                     NewTodoDescription = string.Empty;
                 }
@@ -206,8 +204,8 @@ namespace ToDo.ViewModels
 
                 CountTodaysActiveTodos();
 
-                NewTodoName = NEW_TODO;
-                NewTodoDescription = NEW_DESCRIPTION;
+                NewTodoName = Resources.MainWindowVM_NewTodo;
+                NewTodoDescription = Resources.MainWindowVM_NewDescription;
                 // NewTodoDescription = string.Empty;
             }
         }

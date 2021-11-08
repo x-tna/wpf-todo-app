@@ -4,6 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:ToDo.Controls"
+        xmlns:p="clr-namespace:ToDo.Properties"
         mc:Ignorable="d"
         Name="Window"
         Background="{StaticResource BackgroundMainWindowDark}"
@@ -93,30 +94,30 @@
         </Grid.RowDefinitions>
 
             <controls:SampleCustomControl
-            Header="ToDo hinzufügen"
+            Header="{x:Static p:Resources.MainWindow_Header}"
             TextBoxText="{Binding NewTodoName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             TextBoxDescription="{Binding NewTodoDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            ButtonContent="Hinzufügen"
+            ButtonContent="{x:Static p:Resources.MainWindow_ButtonAdd}"
             ButtonCommand="{Binding AddTodoCommand}"/>
 
             <StackPanel Orientation="Horizontal"
                     Grid.Row="1"
                     Margin="10,0,0,5">
-            <TextBlock Text="ToDo`s"
+            <TextBlock Text="{x:Static p:Resources.MainWindow_HeaderTodos}"
                        Style="{StaticResource StyleHeader}"
                         VerticalAlignment="Bottom"/>
             <Button Style="{StaticResource StyleButtonMaterialDesign}"
                     Margin="48,0,0,0"
-                    Content="Alle anzeigen"
+                    Content="{x:Static p:Resources.MainWindow_ShowAll}"
                     Command="{Binding ShowAllCommand}"
                     />
             <Button Style="{StaticResource StyleButtonMaterialDesign}"
                     Margin="5,0,0,0"
-                    Content="Aktive anzeigen"
+                    Content="{x:Static p:Resources.MainWindow_ShowActive}"
                     Command="{Binding ShowActiveCommand}"/>
             <Button Style="{StaticResource StyleButtonMaterialDesign}"
                     Margin="5,0,0,0"
-                    Content="Erledigte anzeigen" 
+                    Content="{x:Static p:Resources.MainWindow_ShowDone}"
                     Command="{Binding ShowDoneCommand}"/>
         </StackPanel>
         <ScrollViewer Grid.Row="2"
@@ -128,7 +129,7 @@
                     ItemTemplate="{StaticResource TodoItemTemplate}"/>
         </ScrollViewer>
 
-        <TextBlock Text="{Binding NumberOfTodaysActiveTodos, StringFormat= Anzahl der noch nicht erledigten Todos von heute: {0} }"
+        <TextBlock Text="{Binding NumberOfTodaysActiveTodos, StringFormat= {x:Static p:Resources.MainWindow_NumberOfTodaysTodos}}"
                    Style="{StaticResource StyleAdditionalText}"
                    Width="400"
                    Margin="10"

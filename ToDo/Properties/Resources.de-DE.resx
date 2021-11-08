@@ -117,31 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="MainWindowVM_NewDescription" xml:space="preserve">
-    <value>Description</value>
+  <data name="MainWindowButtonAdd" xml:space="preserve">
+    <value>Hinzufügen</value>
   </data>
-  <data name="MainWindowVM_NewTodo" xml:space="preserve">
-    <value>New Todo</value>
+  <data name="MainWindowHeader" xml:space="preserve">
+    <value>Neues Todo hinzufügen</value>
   </data>
-  <data name="MainWindow_ButtonAdd" xml:space="preserve">
-    <value>Add</value>
-  </data>
-  <data name="MainWindow_Header" xml:space="preserve">
-    <value>Add new Todo</value>
-  </data>
-  <data name="MainWindow_HeaderTodos" xml:space="preserve">
+  <data name="MainWindowHeaderTodos" xml:space="preserve">
     <value>Todos</value>
   </data>
-  <data name="MainWindow_NumberOfTodaysTodos" xml:space="preserve">
-    <value>Number of todays active Todos: {0}</value>
+  <data name="MainWindowNumberOfTodaysTodos" xml:space="preserve">
+    <value>Anzahl der heute aktiven Todos: {0}</value>
   </data>
-  <data name="MainWindow_ShowActive" xml:space="preserve">
-    <value>Show active</value>
+  <data name="MainWindowShowActive" xml:space="preserve">
+    <value>Aktive anzeigen</value>
   </data>
-  <data name="MainWindow_ShowAll" xml:space="preserve">
-    <value>Show all</value>
+  <data name="MainWindowShowAll" xml:space="preserve">
+    <value>Alle anzeigen</value>
   </data>
-  <data name="MainWindow_ShowDone" xml:space="preserve">
-    <value>Show done</value>
+  <data name="MainWindowShowDone" xml:space="preserve">
+    <value>Erledigte anzeigen</value>
+  </data>
+  <data name="MainWindowVM_NewDescription" xml:space="preserve">
+    <value>Beschreibung</value>
+  </data>
+  <data name="MainWindowVM_NewTodo" xml:space="preserve">
+    <value>Neues Todo</value>
   </data>
 </root>

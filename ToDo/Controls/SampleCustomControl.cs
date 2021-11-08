@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using ToDo.Properties;
 
 namespace ToDo.Controls
 {
@@ -15,7 +16,7 @@ namespace ToDo.Controls
         public static readonly DependencyProperty HeaderProperty =
             DependencyProperty.Register("Header",
         typeof(string), typeof(SampleCustomControl),
-        new PropertyMetadata("Neuen Eintrag hinzufügen"));
+        new PropertyMetadata("Neues Todo hinzufügen"));
 
         public static readonly DependencyProperty ButtonContentProperty =
             DependencyProperty.Register("ButtonContent",
