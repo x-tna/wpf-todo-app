@@ -13,6 +13,8 @@ namespace ToDo
 
         public DateTime Timestamp { get; set; }
 
+        public string Tag { get; set; }
+
         public int CompareTo(TodoItem other)
         {
             if (Timestamp < other.Timestamp)

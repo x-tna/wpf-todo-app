@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:control="clr-namespace:ToDo.Controls">
+                    xmlns:control="clr-namespace:ToDo.Controls"
+                    xmlns:behaviors="clr-namespace:WPFTextBoxAutoComplete;assembly=WPFTextBoxAutoComplete">
 
     <Style TargetType="control:SampleCustomControl">
         <Setter Property="Template">
@@ -29,27 +30,47 @@
                         <Border.Effect>
                             <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="8" Direction="-50" Opacity="0.4"/>
                         </Border.Effect>
-                        <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
+                                <StackPanel Orientation="Horizontal" >
                                     <TextBox Name="ToDoAdd"  
                                          HorizontalAlignment="Left"
-                                         Width="540"
+                                         Width="400"
                                          Text="{Binding TextBoxText, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                          Style="{StaticResource StyleNewTodoName}"
                                          />
-                                    <TextBox Name="ToDoDescription"
-                                     HorizontalAlignment="Left"
-                                     Style="{StaticResource StyleNewTodoDescription}"
-                                     Text="{Binding TextBoxDescription, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" 
-                                     Grid.Row="1"
-                                         Width="540"/>
+                                    <!--<TextBox x:Name="ToDoTag"
+                                             Margin ="10,0,0,0" 
+                                             Width="100"
+                                             Text="{Binding TextBoxTag, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             behaviors:AutoCompleteBehavior.AutoCompleteItemsSource="{Binding Taglist, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />-->
+                                    <ComboBox x:Name="ComboBox"
+                                              IsEditable="True"
+                                              IsReadOnly="False"
+                                              MinWidth="118"
+                                              Background="DarkSalmon"
+                                              Height="22"
+                                              BorderThickness="0"
+                                              Text="{Binding TextBoxTag, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              ItemsSource="{Binding Taglist, 
+                                                            RelativeSource={RelativeSource TemplatedParent}, 
+                                                            UpdateSourceTrigger=PropertyChanged}" />
+                                </StackPanel>
+
+                                <TextBox Name="ToDoDescription"
+                                            HorizontalAlignment="Left"
+                                            Style="{StaticResource StyleNewTodoDescription}"
+                                            Text="{Binding TextBoxDescription, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" 
+                                            Grid.Row="1"
+                                            Width="540"/>
+
                             </Grid>
                     </Border>
                         <Button Margin="5,0,10,0"

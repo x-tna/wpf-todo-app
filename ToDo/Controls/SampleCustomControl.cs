@@ -38,6 +38,18 @@ namespace ToDo.Controls
                 typeof(string), typeof(SampleCustomControl), 
                 new PropertyMetadata(""));
 
+        public static readonly DependencyProperty TextBoxTagProperty =
+            DependencyProperty.Register("TextBoxTag", 
+                typeof(string), typeof(SampleCustomControl), 
+                new PropertyMetadata("Tag"));
+
+
+        public static readonly DependencyProperty TaglistProperty =
+            DependencyProperty.Register("Taglist", 
+                typeof(IEnumerable<string>), 
+                typeof(SampleCustomControl), new PropertyMetadata());
+
+
 
         public string Header
         {
@@ -66,6 +78,19 @@ namespace ToDo.Controls
         {
             get { return (string)GetValue(TextBoxDescriptionProperty); }
             set { SetValue(TextBoxDescriptionProperty, value); }
+        }
+
+        public string TextBoxTag
+        {
+            get { return (string)GetValue(TextBoxTagProperty); }
+            set { SetValue(TextBoxTagProperty, value); }
+
+        }
+
+        public IEnumerable<string> Taglist
+        {
+            get { return (IEnumerable<string>)GetValue(TaglistProperty); }
+            set { SetValue(TaglistProperty, value); }
         }
 
         static SampleCustomControl()

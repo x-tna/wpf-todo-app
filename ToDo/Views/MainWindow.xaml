@@ -25,7 +25,8 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="30"/>
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <Grid.RowDefinitions>
@@ -43,7 +44,7 @@
                             VerticalAlignment="Center"
                             Foreground="{Binding Name, Converter={StaticResource ToDoNameToBrushConverter}}"
                             Text="{Binding Name}" />
-                        <TextBlock x:Name="TextDescription" 
+                    <TextBlock x:Name="TextDescription" 
                            Grid.Row="1"
                            Grid.Column="1"
                            HorizontalAlignment="Stretch"
@@ -55,13 +56,25 @@
                            Opacity="10"
                            TextWrapping="Wrap"
                            Visibility="{Binding Description, Converter={StaticResource TextToVisibilityConverter}}"/>
-                    <TextBlock x:Name="TextTimestamp"
+                    <ComboBox x:Name="ComboBox"
+                            IsEditable="True"
+                            IsReadOnly="False"
                             Grid.Column="2"
+                            HorizontalAlignment="Left"
+                              Margin="10,0,50,0"
+                            MinWidth="118"
+                            Background="DarkSalmon"
+                            Height="22"
+                            BorderThickness="0"
+                            Text="{Binding Tag, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                            ItemsSource="{Binding DataContext.TodoTags, ElementName=TodoList, IsAsync=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock x:Name="TextTimestamp"
+                            Grid.Column="3"
                             HorizontalAlignment="Right"
                             Foreground="WhiteSmoke"
                             FontWeight="Light"
                             Text="{Binding TimeStamp, Converter={StaticResource DateToLongDateConverter}}" />
-                    <Button Grid.Column="2"
+                    <Button Grid.Column="3"
                             Grid.Row="1"
                             Width="75"
                             Height="25"
@@ -94,31 +107,45 @@
         </Grid.RowDefinitions>
 
             <controls:SampleCustomControl
-            Header="{x:Static p:Resources.MainWindow_Header}"
+            Header="{x:Static p:Resources.MainWindowHeader}"
             TextBoxText="{Binding NewTodoName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             TextBoxDescription="{Binding NewTodoDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            ButtonContent="{x:Static p:Resources.MainWindow_ButtonAdd}"
-            ButtonCommand="{Binding AddTodoCommand}"/>
+            ButtonContent="{x:Static p:Resources.MainWindowButtonAdd}"
+            ButtonCommand="{Binding AddTodoCommand}"
+            TextBoxTag="{Binding NewTodoTag, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Taglist="{Binding TodoTags, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <StackPanel Orientation="Horizontal"
                     Grid.Row="1"
                     Margin="10,0,0,5">
-            <TextBlock Text="{x:Static p:Resources.MainWindow_HeaderTodos}"
+            <TextBlock Text="{x:Static p:Resources.MainWindowHeaderTodos}"
                        Style="{StaticResource StyleHeader}"
                         VerticalAlignment="Bottom"/>
             <Button Style="{StaticResource StyleButtonMaterialDesign}"
                     Margin="48,0,0,0"
-                    Content="{x:Static p:Resources.MainWindow_ShowAll}"
+                    Content="{x:Static p:Resources.MainWindowShowAll}"
                     Command="{Binding ShowAllCommand}"
                     />
             <Button Style="{StaticResource StyleButtonMaterialDesign}"
                     Margin="5,0,0,0"
-                    Content="{x:Static p:Resources.MainWindow_ShowActive}"
+                    Content="{x:Static p:Resources.MainWindowShowActive}"
                     Command="{Binding ShowActiveCommand}"/>
             <Button Style="{StaticResource StyleButtonMaterialDesign}"
                     Margin="5,0,0,0"
-                    Content="{x:Static p:Resources.MainWindow_ShowDone}"
+                    Content="{x:Static p:Resources.MainWindowShowDone}"
                     Command="{Binding ShowDoneCommand}"/>
+            <ComboBox Margin="110,0,0,0"
+                      MinWidth="120"
+                      Height="22"
+                      BorderThickness="0"
+                      Background="DarkSalmon"
+                      ItemsSource="{Binding TodoTags, UpdateSourceTrigger=PropertyChanged}" 
+                      SelectedItem="{Binding TodoTagFilter}" >
+                <ComboBox.Resources>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="DarkSalmon" />
+                </ComboBox.Resources>
+            </ComboBox>
+
         </StackPanel>
         <ScrollViewer Grid.Row="2"
                       Margin="0,0,10,0">
@@ -129,7 +156,7 @@
                     ItemTemplate="{StaticResource TodoItemTemplate}"/>
         </ScrollViewer>
 
-        <TextBlock Text="{Binding NumberOfTodaysActiveTodos, StringFormat= {x:Static p:Resources.MainWindow_NumberOfTodaysTodos}}"
+        <TextBlock Text="{Binding NumberOfTodaysActiveTodos, StringFormat= {x:Static p:Resources.MainWindowNumberOfTodaysTodos}}"
                    Style="{StaticResource StyleAdditionalText}"
                    Width="400"
                    Margin="10"

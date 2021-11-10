@@ -63,81 +63,81 @@ namespace ToDo.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Add.
         /// </summary>
-        public static string MainWindow_ButtonAdd {
+        public static string MainWindowButtonAdd {
             get {
-                return ResourceManager.GetString("MainWindow_ButtonAdd", resourceCulture);
+                return ResourceManager.GetString("MainWindowButtonAdd", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Add new Todo.
         /// </summary>
-        public static string MainWindow_Header {
+        public static string MainWindowHeader {
             get {
-                return ResourceManager.GetString("MainWindow_Header", resourceCulture);
+                return ResourceManager.GetString("MainWindowHeader", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Todos.
         /// </summary>
-        public static string MainWindow_HeaderTodos {
+        public static string MainWindowHeaderTodos {
             get {
-                return ResourceManager.GetString("MainWindow_HeaderTodos", resourceCulture);
+                return ResourceManager.GetString("MainWindowHeaderTodos", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Number of todays active Todos: {0}.
         /// </summary>
-        public static string MainWindow_NumberOfTodaysTodos {
+        public static string MainWindowNumberOfTodaysTodos {
             get {
-                return ResourceManager.GetString("MainWindow_NumberOfTodaysTodos", resourceCulture);
+                return ResourceManager.GetString("MainWindowNumberOfTodaysTodos", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Show active.
         /// </summary>
-        public static string MainWindow_ShowActive {
+        public static string MainWindowShowActive {
             get {
-                return ResourceManager.GetString("MainWindow_ShowActive", resourceCulture);
+                return ResourceManager.GetString("MainWindowShowActive", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Show all.
         /// </summary>
-        public static string MainWindow_ShowAll {
+        public static string MainWindowShowAll {
             get {
-                return ResourceManager.GetString("MainWindow_ShowAll", resourceCulture);
+                return ResourceManager.GetString("MainWindowShowAll", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Show done.
         /// </summary>
-        public static string MainWindow_ShowDone {
+        public static string MainWindowShowDone {
             get {
-                return ResourceManager.GetString("MainWindow_ShowDone", resourceCulture);
+                return ResourceManager.GetString("MainWindowShowDone", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
-        public static string MainWindowVM_NewDescription {
+        public static string MainWindowVMNewDescription {
             get {
-                return ResourceManager.GetString("MainWindowVM_NewDescription", resourceCulture);
+                return ResourceManager.GetString("MainWindowVMNewDescription", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to New Todo.
         /// </summary>
-        public static string MainWindowVM_NewTodo {
+        public static string MainWindowVMNewTodo {
             get {
-                return ResourceManager.GetString("MainWindowVM_NewTodo", resourceCulture);
+                return ResourceManager.GetString("MainWindowVMNewTodo", resourceCulture);
             }
         }
     }

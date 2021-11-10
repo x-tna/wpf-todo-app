@@ -12,6 +12,7 @@ namespace ToDo.ViewModels
         private readonly ITodoItemService _todoitemService;
         private readonly MainWindowViewModel mainWindowViewModel;
         private readonly IEnumerable<TodoItem> _allTodos;
+        private readonly ITagService _tagService;
 
         public string TodaysTodos { get; set; }
 
@@ -47,18 +48,40 @@ namespace ToDo.ViewModels
 
         }
 
+        public string Tag
+        {
+            get { return TodoItem.Tag; }
+            set 
+            {
+                TodoItem.Tag = value;
+                _todoitemService.WriteTodos(_allTodos);
+
+                var todotags = mainWindowViewModel.TodoTags;
+
+                if (!todotags.Contains(TodoItem.Tag))
+                {
+                    todotags.Add(TodoItem.Tag);
+                    _tagService.WriteTags(todotags);
+                }
+       
+
+    }
+}
+
         public TodoItem TodoItem { get; }
 
         public TodoItemViewModel(
             TodoItem todoitem,
             ITodoItemService todoitemService,
             IEnumerable<TodoItemViewModel> allTodos,
-            MainWindowViewModel mainWindowViewModel)
+            MainWindowViewModel mainWindowViewModel,
+            ITagService tagService)
         {
             TodoItem = todoitem;
             _todoitemService = todoitemService;
             this.mainWindowViewModel = mainWindowViewModel;
             _allTodos = allTodos.Select(vm => vm.TodoItem);
+            _tagService = tagService;
 
         }
     }

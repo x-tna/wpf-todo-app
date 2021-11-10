@@ -92,6 +92,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WPFTextBoxAutoComplete, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPFTextBoxAutoComplete.1.0.5\lib\net40\WPFTextBoxAutoComplete.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -107,6 +110,7 @@
     <Compile Include="Converters\TextToUpperCaseConverter.cs" />
     <Compile Include="Converters\TextToVisibilityConverter.cs" />
     <Compile Include="Models\TodoItem.cs" />
+    <Compile Include="Models\TodoTag.cs" />
     <Compile Include="Properties\Resources.de-DE.Designer.cs">
       <DependentUpon>Resources.de-DE.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -114,7 +118,9 @@
     </Compile>
     <Compile Include="Services\DateTimeService.cs" />
     <Compile Include="Services\IDateTimeService.cs" />
+    <Compile Include="Services\ITagService.cs" />
     <Compile Include="Services\ITodoItemService.cs" />
+    <Compile Include="Services\TagService.cs" />
     <Compile Include="Services\TodoItemService.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Page Include="Controls\SampleUserControl.xaml">

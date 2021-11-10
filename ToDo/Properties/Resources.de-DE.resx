@@ -138,10 +138,10 @@
   <data name="MainWindowShowDone" xml:space="preserve">
     <value>Erledigte anzeigen</value>
   </data>
-  <data name="MainWindowVM_NewDescription" xml:space="preserve">
+  <data name="MainWindowVMNewDescription" xml:space="preserve">
     <value>Beschreibung</value>
   </data>
-  <data name="MainWindowVM_NewTodo" xml:space="preserve">
+  <data name="MainWindowVMNewTodo" xml:space="preserve">
     <value>Neues Todo</value>
   </data>
 </root>
