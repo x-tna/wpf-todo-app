@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Autofac;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using ToDo.IoC;
 using ToDo.Services;
 using ToDo.ViewModels;
 
@@ -18,9 +20,7 @@ namespace ToDo.Views
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainWindowViewModel(
-                new TodoItemService(),
-                new DateTimeService());
+            DataContext = IocContainer.Container.Resolve<MainWindowViewModel>();
 
         }
 

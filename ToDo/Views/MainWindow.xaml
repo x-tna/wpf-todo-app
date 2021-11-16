@@ -12,20 +12,6 @@
         Title="ToDo - Listen App" Height="600" Width="700">
 
     <Window.Resources>
-        <DataTemplate x:Key="TagTemplate" >
-            <!--<ComboBox x:Name="ComboBox"
-                            IsEditable="True"
-                            IsReadOnly="False"
-                            Grid.Column="2"
-                            HorizontalAlignment="Left"
-                            Margin="10,0,50,0"
-                            MinWidth="118"
-                            Background="DarkSalmon"
-                            Height="22"
-                            BorderThickness="0"
-                            Text="{Binding Tagname, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                            ItemsSource="{Binding DataContext.TodoTags, ElementName=TodoList, IsAsync=True}" />-->
-        </DataTemplate>
         
         <DataTemplate x:Key="TodoItemTemplate">
             <Border BorderBrush="{StaticResource BackgroundMainWindowWhite}"
@@ -41,14 +27,14 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="30"/>
                     <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="20" />
                     <RowDefinition Height="40" />
-                        <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
  
                 <CheckBox x:Name="Checkbox"
@@ -75,33 +61,26 @@
                            Visibility="{Binding Description, Converter={StaticResource TextToVisibilityConverter}}"/>
                     <WrapPanel Grid.Row="2"
                                Grid.ColumnSpan="2">
-
                         <ItemsControl x:Name="TagList"
-                                ItemsSource="{Binding Tags, Mode=TwoWay}"
-                                Foreground="DarkSalmon"    >
+                                ItemsSource="{Binding Tags, Mode=TwoWay}" >
                         <ItemsControl.ItemTemplate>
                             <DataTemplate >
                                     <StackPanel Orientation="Horizontal"
-                                            Margin ="10,0,0,5" 
-                                            >
-                                        <!--<TextBox x:Name="ToDoTag"
-                                        Width="Auto"
-                                        Text="{Binding Path=.}" />-->
+                                            Margin ="10,0,0,5"  >
                                         <ComboBox x:Name="ComboBox"
-                                          IsEditable="True"
-                                          IsReadOnly="False"
-                                          Width="Auto"
-                                          BorderThickness="0"
-                                          Text="{Binding  Path=., Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                          ItemsSource="{Binding DataContext.TodoTags, RelativeSource={RelativeSource AncestorType={x:Type Window }}}" />
-
+                                                  IsEditable="True"
+                                                  IsReadOnly="False"
+                                                  Width="Auto"
+                                                  BorderThickness="0"
+                                                  Text="{Binding  Path=., Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                  ItemsSource="{Binding DataContext.TodoTags, RelativeSource={RelativeSource AncestorType={x:Type Window }}}" />
                                         <Button x:Name="TagDelete"
-                                            Content="X"
-                                            Background="{StaticResource ForegroundLixtBox}"
-                                            Width="20"
-                                            BorderThickness="0"
-                                            CommandParameter="{Binding}"
-                                            Command="{Binding DataContext.DeleteTagCommand, ElementName=TagList, IsAsync=True}" />
+                                                Content="X"
+                                                Background="{StaticResource ForegroundLixtBox}"
+                                                Width="20"
+                                                BorderThickness="0"
+                                                CommandParameter="{Binding}"
+                                                Command="{Binding DataContext.DeleteTagCommand, ElementName=TagList, IsAsync=True}" />
                                     </StackPanel>
                                 </DataTemplate>
                             

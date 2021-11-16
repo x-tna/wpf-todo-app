@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using ToDo.IoC;
 
 namespace ToDo
 {
@@ -13,5 +14,11 @@ namespace ToDo
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            IocContainer.Init();
+        }
+        
+
     }
 }

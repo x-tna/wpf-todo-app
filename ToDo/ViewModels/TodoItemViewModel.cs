@@ -69,7 +69,6 @@ namespace ToDo.ViewModels
         public ParameterCommand<string> DeleteTagCommand { get; }
 
 
-
         public TodoItem TodoItem { get; }
 
         public TodoItemViewModel(
