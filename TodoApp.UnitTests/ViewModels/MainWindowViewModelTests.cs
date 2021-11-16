@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToDo;
+using ToDo.Models;
 using ToDo.Services;
 using ToDo.ViewModels;
 

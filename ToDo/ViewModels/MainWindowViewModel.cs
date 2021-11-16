@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using ToDo.Commands;
+using ToDo.Models;
 using ToDo.Properties;
 using ToDo.Services;
 
@@ -47,7 +48,6 @@ namespace ToDo.ViewModels
     {
         private readonly ITodoItemService _todoItemService;
         private readonly IDateTimeService _dateTimeService;
-        private readonly ITagService _tagService;
 
         private string _newTodoName;
         public string NewTodoName
@@ -73,28 +73,37 @@ namespace ToDo.ViewModels
             }
         }
 
-        private string _newTodoTag;
+        private string _newTag;
 
-        public string NewTodoTag
+        public string NewTag
         {
-            get { return _newTodoTag; }
+            get { return _newTag; }
             set 
             {
-                _newTodoTag = value;
-                RaisePropertyChanged(nameof(NewTodoDescription));
+                _newTag = value;
+                AddNewTag();
+                RaisePropertyChanged(nameof(NewTag));
+               
+
             }
         }
 
-        private ObservableCollection<string> _todoTags;
+        private ObservableCollection<string> _newTodoTags;
 
-        public ObservableCollection<string> TodoTags
+        public ObservableCollection<string> NewTodoTags
         {
-            get { return _todoTags; }
+            get { return _newTodoTags; }
             set
-            { 
-                _todoTags = value;
-                RaisePropertyChanged(nameof(TodoTags));
+            {
+                _newTodoTags = value;
+                RaisePropertyChanged(nameof(NewTodoTags));
             }
+        }
+
+        public IEnumerable<string> TodoTags
+        {
+            get { return TodoItems.SelectMany(item => item.Tags).Distinct();  }
+           
         }
 
         private string _todoTagFilter;
@@ -143,16 +152,16 @@ namespace ToDo.ViewModels
         public ActionCommand ShowActiveCommand { get; }
         public ActionCommand ShowDoneCommand { get; }
         public ParameterCommand<TodoItemViewModel> DeleteTodoCommand { get; }
+        public ParameterCommand<string> DeleteNewTagCommand { get; }
+
 
 
         public MainWindowViewModel(
             ITodoItemService todoItemService,
-            IDateTimeService dateTimeService,
-            ITagService tagService)
+            IDateTimeService dateTimeService)
         {
             _todoItemService = todoItemService;
             _dateTimeService = dateTimeService;
-            _tagService = tagService;
          
 
             AddTodoCommand = new ActionCommand(AddNewTodo, CanAddNewTodo);
@@ -161,6 +170,8 @@ namespace ToDo.ViewModels
             ShowDoneCommand = new ActionCommand(ShowDone, CanShowDone);
 
             DeleteTodoCommand = new ParameterCommand<TodoItemViewModel>(DeleteSelectedTodo, CanDeleteTodo);
+            DeleteNewTagCommand = new ParameterCommand<string>(DeleteSelectedTag, CanDeleteTag);
+
 
             TodoItems = new ObservableCollection<TodoItemViewModel>();
             var todoItemModels = _todoItemService.ReadTodos();
@@ -172,24 +183,36 @@ namespace ToDo.ViewModels
 
             CountTodaysActiveTodos();
 
-            TodoTags = new ObservableCollection<string>();
-            var taglist = _tagService.ReadTags();
-            foreach(var tag in taglist)
-            {
-                TodoTags.Add(tag);
-            }
+            NewTodoTags = new ObservableCollection<string>();
+
 
             NewTodoName = Resources.MainWindowVMNewTodo;
             NewTodoDescription = Resources.MainWindowVMNewDescription;
+            NewTag = "+";
+        }
+
+        private bool CanDeleteTag(string tag)
+        {
+            return true;
+        }
+
+        private void DeleteSelectedTag(string tag)
+        {
+            NewTodoTags.Remove(tag);
         }
 
 
         private void ShowFilteredItems()
         {
-            TodoItems = new ObservableCollection<TodoItemViewModel>(_todoItemService
-                .ReadTodos()
-                .Where(item => item.Tag == TodoTagFilter)
-                .Select(CreateTodoViewModel));
+            if(!String.IsNullOrWhiteSpace(TodoTagFilter))
+            {
+                TodoItems = new ObservableCollection<TodoItemViewModel>(_todoItemService
+                                .ReadTodos()
+                                .Where(item => item.Tags.Contains(TodoTagFilter))
+                                .Select(CreateTodoViewModel));
+            }
+
+
         }
 
         private bool CanShowDone()
@@ -227,11 +250,13 @@ namespace ToDo.ViewModels
             TodoItems = new ObservableCollection<TodoItemViewModel>(_todoItemService
                 .ReadTodos()
                 .Select(CreateTodoViewModel));
+
+
         }
 
         private TodoItemViewModel CreateTodoViewModel(TodoItem todoItem)
         {
-            return new TodoItemViewModel(todoItem, _todoItemService, TodoItems, this, _tagService);
+            return new TodoItemViewModel(todoItem, _todoItemService, TodoItems, this);
         }
 
         private bool CanAddNewTodo()
@@ -247,13 +272,14 @@ namespace ToDo.ViewModels
                     NewTodoDescription = string.Empty;
                 }
 
+
                 var newItem = new TodoItem()
                 {
                     Name = NewTodoName,
                     Description = NewTodoDescription,
                     IsDone = false,
                     Timestamp = _dateTimeService.Now(),
-                    Tag = NewTodoTag,
+                    Tags = NewTodoTags.ToList()
                 };
 
                 TodoItems.Add(CreateTodoViewModel(newItem));
@@ -262,16 +288,14 @@ namespace ToDo.ViewModels
 
                 CountTodaysActiveTodos();
 
-                if(!TodoTags.Contains(NewTodoTag))
-                {
-                    TodoTags.Add(NewTodoTag);
-                    _tagService.WriteTags(TodoTags);
-                }
+                RaisePropertyChanged(nameof(TodoTags));
+
                 
 
                 NewTodoName = Resources.MainWindowVMNewTodo;
                 NewTodoDescription = Resources.MainWindowVMNewDescription;
-                // NewTodoDescription = string.Empty;
+                NewTodoTags.Clear();
+
             }
         }
 
@@ -309,6 +333,16 @@ namespace ToDo.ViewModels
             return todoitem.TimeStamp.Date == DateTime.Now.Date;
         }
 
+
+        private void AddNewTag()
+        {
+            if (!String.IsNullOrWhiteSpace(NewTag) & !NewTag.Equals("+") & !NewTodoTags.Contains(NewTag))
+            {
+                NewTodoTags.Add(NewTag);
+                NewTag = "+";
+            }
+
+        }
 
     }
 }

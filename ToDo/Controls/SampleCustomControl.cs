@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using ToDo.Models;
 using ToDo.Properties;
 
 namespace ToDo.Controls
@@ -43,11 +45,21 @@ namespace ToDo.Controls
                 typeof(string), typeof(SampleCustomControl), 
                 new PropertyMetadata("Tag"));
 
+        public static readonly DependencyProperty ListNewTodoTagsProperty =
+            DependencyProperty.Register("ListNewTodoTags",
+                typeof(ObservableCollection<string>),
+                typeof(SampleCustomControl), new PropertyMetadata());
+
 
         public static readonly DependencyProperty TaglistProperty =
             DependencyProperty.Register("Taglist", 
                 typeof(IEnumerable<string>), 
                 typeof(SampleCustomControl), new PropertyMetadata());
+
+        public static readonly DependencyProperty ButtonDeleteTagCommandProperty =
+    DependencyProperty.Register("ButtonDeleteTagCommand",
+        typeof(ICommand), typeof(SampleCustomControl),
+        new PropertyMetadata());
 
 
 
@@ -87,10 +99,22 @@ namespace ToDo.Controls
 
         }
 
+        public ObservableCollection<string> ListNewTodoTags
+        {
+            get { return (ObservableCollection<string>)GetValue(ListNewTodoTagsProperty); }
+            set { SetValue(ListNewTodoTagsProperty, value); }
+        }
+
         public IEnumerable<string> Taglist
         {
             get { return (IEnumerable<string>)GetValue(TaglistProperty); }
             set { SetValue(TaglistProperty, value); }
+        }
+
+        public ICommand ButtonDeleteTagCommand
+        {
+            get { return (ICommand)GetValue(ButtonDeleteTagCommandProperty); }
+            set { SetValue(ButtonDeleteTagCommandProperty, value); }
         }
 
         static SampleCustomControl()

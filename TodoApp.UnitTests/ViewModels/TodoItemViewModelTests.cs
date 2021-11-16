@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToDo;
+using ToDo.Models;
 using ToDo.Services;
 using ToDo.ViewModels;
 
@@ -90,6 +91,67 @@ namespace TodoApp.UnitTests.ViewModels
             // Assert
             viewModel.TodoItem.Description.ShouldBe("Test Description");
 
+        }
+
+        [TestMethod]
+        public void NewTag_NewTagIsTheSameAsInModel()
+        {
+            // Arrange
+            var viewModel = CreateSut();
+            // Act
+            viewModel.NewTag = "Neuer Tag";
+            // Assert
+            viewModel.TodoItem.NewTag.ShouldBe("Neuer Tag");
+
+        }
+
+        [TestMethod]
+        public void AddNewTag_TagIsNotWhitespace_AddNewTagIsExecuted()
+        {
+            // Arrange
+            var fakeTodoService = new FakeTodoService();
+            var viewModel = CreateSut(fakeTodoService);
+            // Act
+            viewModel.NewTag = "Neuer Tag";
+            // Assert
+            fakeTodoService.WriteToDosWasCalled.ShouldBeTrue();
+        }
+
+        [TestMethod]
+        public void AddNewTag_TagIsWhitespace_AddNewTagIsNotExecuted()
+        {
+            // Arrange
+            var fakeTodoService = new FakeTodoService();
+            var viewModel = CreateSut(fakeTodoService);
+            // Act
+            viewModel.NewTag = " ";
+
+            // Assert
+            fakeTodoService.WriteToDosWasCalled.ShouldBeFalse();
+        }
+
+        [TestMethod]
+        public void AddNewTag_TagIsNull_AddNewTagIsNotExecuted()
+        {
+            // Arrange
+            var fakeTodoService = new FakeTodoService();
+            var viewModel = CreateSut(fakeTodoService);
+            // Act
+            viewModel.NewTag = null;
+            // Assert
+            fakeTodoService.WriteToDosWasCalled.ShouldBeFalse();
+        }
+
+        [TestMethod]
+        public void DeleteTag_TagIsSelected_DeleteTagIsExecuted()
+        {
+            // Arrange
+            var fakeTodoService = new FakeTodoService();
+            var viewModel = CreateSut(fakeTodoService);
+            // Act
+
+            // Assert
+            fakeTodoService.WriteToDosWasCalled.ShouldBeTrue();
         }
 
         private TodoItemViewModel CreateSut(FakeTodoService fakeTodoService = null)

@@ -144,4 +144,7 @@
   <data name="MainWindowVMNewTodo" xml:space="preserve">
     <value>New Todo</value>
   </data>
+  <data name="SampleCustomControlTag" xml:space="preserve">
+    <value>Tag:</value>
+  </data>
 </root>

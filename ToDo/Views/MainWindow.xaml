@@ -5,12 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:ToDo.Controls"
         xmlns:p="clr-namespace:ToDo.Properties"
+        xmlns:behaviors="clr-namespace:WPFTextBoxAutoComplete;assembly=WPFTextBoxAutoComplete"
         mc:Ignorable="d"
         Name="Window"
         Background="{StaticResource BackgroundMainWindowDark}"
         Title="ToDo - Listen App" Height="600" Width="700">
 
     <Window.Resources>
+        <DataTemplate x:Key="TagTemplate" >
+            <!--<ComboBox x:Name="ComboBox"
+                            IsEditable="True"
+                            IsReadOnly="False"
+                            Grid.Column="2"
+                            HorizontalAlignment="Left"
+                            Margin="10,0,50,0"
+                            MinWidth="118"
+                            Background="DarkSalmon"
+                            Height="22"
+                            BorderThickness="0"
+                            Text="{Binding Tagname, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                            ItemsSource="{Binding DataContext.TodoTags, ElementName=TodoList, IsAsync=True}" />-->
+        </DataTemplate>
+        
         <DataTemplate x:Key="TodoItemTemplate">
             <Border BorderBrush="{StaticResource BackgroundMainWindowWhite}"
                     BorderThickness="1"
@@ -32,7 +48,8 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="20" />
                     <RowDefinition Height="40" />
-                </Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
  
                 <CheckBox x:Name="Checkbox"
                           IsChecked="{Binding Path=IsDone, Mode=TwoWay}" 
@@ -56,18 +73,60 @@
                            Opacity="10"
                            TextWrapping="Wrap"
                            Visibility="{Binding Description, Converter={StaticResource TextToVisibilityConverter}}"/>
-                    <ComboBox x:Name="ComboBox"
-                            IsEditable="True"
-                            IsReadOnly="False"
-                            Grid.Column="2"
-                            HorizontalAlignment="Left"
-                              Margin="10,0,50,0"
-                            MinWidth="118"
-                            Background="DarkSalmon"
-                            Height="22"
-                            BorderThickness="0"
-                            Text="{Binding Tag, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                            ItemsSource="{Binding DataContext.TodoTags, ElementName=TodoList, IsAsync=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <WrapPanel Grid.Row="2"
+                               Grid.ColumnSpan="2">
+
+                        <ItemsControl x:Name="TagList"
+                                ItemsSource="{Binding Tags, Mode=TwoWay}"
+                                Foreground="DarkSalmon"    >
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate >
+                                    <StackPanel Orientation="Horizontal"
+                                            Margin ="10,0,0,5" 
+                                            >
+                                        <!--<TextBox x:Name="ToDoTag"
+                                        Width="Auto"
+                                        Text="{Binding Path=.}" />-->
+                                        <ComboBox x:Name="ComboBox"
+                                          IsEditable="True"
+                                          IsReadOnly="False"
+                                          Width="Auto"
+                                          BorderThickness="0"
+                                          Text="{Binding  Path=., Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                          ItemsSource="{Binding DataContext.TodoTags, RelativeSource={RelativeSource AncestorType={x:Type Window }}}" />
+
+                                        <Button x:Name="TagDelete"
+                                            Content="X"
+                                            Background="{StaticResource ForegroundLixtBox}"
+                                            Width="20"
+                                            BorderThickness="0"
+                                            CommandParameter="{Binding}"
+                                            Command="{Binding DataContext.DeleteTagCommand, ElementName=TagList, IsAsync=True}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Width="Auto"
+                                            ItemWidth="Auto"
+                                            ItemHeight="Auto" 
+                                           />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                        <ComboBox x:Name="ComboBoxNewTag"
+                                  IsEditable="True"
+                                  IsReadOnly="False"
+                                  Margin="10,0,0,0"
+                                  Width="Auto"
+                                  Height="20" 
+                                  VerticalAlignment="Top"
+                                  BorderThickness="0"
+                                  Text="{Binding NewTag, UpdateSourceTrigger=LostFocus}"
+                                  ItemsSource="{Binding DataContext.TodoTags, RelativeSource={RelativeSource AncestorType={x:Type Window }}}" />
+                    </WrapPanel>
+
                     <TextBlock x:Name="TextTimestamp"
                             Grid.Column="3"
                             HorizontalAlignment="Right"
@@ -96,6 +155,7 @@
                 </Trigger>
             </DataTemplate.Triggers>
         </DataTemplate>
+        
     </Window.Resources>
 
     <Grid>
@@ -107,13 +167,15 @@
         </Grid.RowDefinitions>
 
             <controls:SampleCustomControl
-            Header="{x:Static p:Resources.MainWindowHeader}"
-            TextBoxText="{Binding NewTodoName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            TextBoxDescription="{Binding NewTodoDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            ButtonContent="{x:Static p:Resources.MainWindowButtonAdd}"
-            ButtonCommand="{Binding AddTodoCommand}"
-            TextBoxTag="{Binding NewTodoTag, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            Taglist="{Binding TodoTags, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    Header="{x:Static p:Resources.MainWindowHeader}"
+                    TextBoxText="{Binding NewTodoName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    TextBoxDescription="{Binding NewTodoDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    ButtonContent="{x:Static p:Resources.MainWindowButtonAdd}"
+                    ButtonCommand="{Binding AddTodoCommand}"
+                    TextBoxTag="{Binding NewTag, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    ListNewTodoTags="{Binding NewTodoTags, UpdateSourceTrigger=PropertyChanged}"
+                    Taglist="{Binding TodoTags, UpdateSourceTrigger=PropertyChanged}"
+                    ButtonDeleteTagCommand="{Binding DeleteNewTagCommand}"/>
 
             <StackPanel Orientation="Horizontal"
                     Grid.Row="1"
@@ -136,14 +198,10 @@
                     Command="{Binding ShowDoneCommand}"/>
             <ComboBox Margin="110,0,0,0"
                       MinWidth="120"
-                      Height="22"
+                      Height="20"
                       BorderThickness="0"
-                      Background="DarkSalmon"
                       ItemsSource="{Binding TodoTags, UpdateSourceTrigger=PropertyChanged}" 
                       SelectedItem="{Binding TodoTagFilter}" >
-                <ComboBox.Resources>
-                    <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="DarkSalmon" />
-                </ComboBox.Resources>
             </ComboBox>
 
         </StackPanel>

@@ -13,6 +13,9 @@ namespace ToDo.Commands
         private Action<TParam> _execute;
         private Predicate<TParam> _canExecute;
 
+        public Action AddTag { get; }
+        public Func<bool> CanAddTag { get; }
+
         public event EventHandler CanExecuteChanged;
 
         public ParameterCommand(Action<TParam> execute, Predicate<TParam> canExecute)
@@ -20,6 +23,12 @@ namespace ToDo.Commands
             _execute = execute;
             _canExecute = canExecute;
 
+        }
+
+        public ParameterCommand(Action addTag, Func<bool> canAddTag)
+        {
+            AddTag = addTag;
+            CanAddTag = canAddTag;
         }
 
         public bool CanExecute(object parameter)

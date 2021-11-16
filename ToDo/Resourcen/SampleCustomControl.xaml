@@ -27,9 +27,9 @@
                                 Margin="10,10,5,20"
                                 CornerRadius="2"
                                 Background="{StaticResource BackgroundListBox}">
-                        <Border.Effect>
-                            <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="8" Direction="-50" Opacity="0.4"/>
-                        </Border.Effect>
+                            <Border.Effect>
+                                <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="8" Direction="-50" Opacity="0.4"/>
+                            </Border.Effect>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -38,31 +38,15 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                <StackPanel Orientation="Horizontal" >
-                                    <TextBox Name="ToDoAdd"  
+
+                                <TextBox Name="ToDoAdd"  
                                          HorizontalAlignment="Left"
-                                         Width="400"
+                                         Width="540"
                                          Text="{Binding TextBoxText, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                          Style="{StaticResource StyleNewTodoName}"
                                          />
-                                    <!--<TextBox x:Name="ToDoTag"
-                                             Margin ="10,0,0,0" 
-                                             Width="100"
-                                             Text="{Binding TextBoxTag, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                             behaviors:AutoCompleteBehavior.AutoCompleteItemsSource="{Binding Taglist, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />-->
-                                    <ComboBox x:Name="ComboBox"
-                                              IsEditable="True"
-                                              IsReadOnly="False"
-                                              MinWidth="118"
-                                              Background="DarkSalmon"
-                                              Height="22"
-                                              BorderThickness="0"
-                                              Text="{Binding TextBoxTag, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              ItemsSource="{Binding Taglist, 
-                                                            RelativeSource={RelativeSource TemplatedParent}, 
-                                                            UpdateSourceTrigger=PropertyChanged}" />
-                                </StackPanel>
 
                                 <TextBox Name="ToDoDescription"
                                             HorizontalAlignment="Left"
@@ -70,18 +54,71 @@
                                             Text="{Binding TextBoxDescription, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" 
                                             Grid.Row="1"
                                             Width="540"/>
+                                <WrapPanel Grid.Row="2"
+                                           Margin="0,10,0,0 ">
+                                    <ItemsControl x:Name="ListTaglist" 
+                                    
+                                              ItemsSource="{Binding ListNewTodoTags, RelativeSource={RelativeSource TemplatedParent}}"
+                                              Foreground="DarkSalmon"
+                                              >
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate >
+                                                <StackPanel Orientation="Horizontal"
+                                                        Margin ="10,10,0,5" >
+                                                    <TextBox x:Name="ToDoTag"
+                                                        Width="Auto"
+                                                        Text="{Binding Path=.}" />
+                                                    <Button x:Name="TagDelete"
+                                                        Content="X"
+                                                        Background="{StaticResource ForegroundLixtBox}"
+                                                        Width="20"
+                                                        BorderThickness="0"
+                                                        CommandParameter="{Binding}"
+                                                        Command="{Binding ButtonDeleteTagCommand, RelativeSource={RelativeSource AncestorType={x:Type control:SampleCustomControl}} }"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel Width="Auto"
+                                                   ItemWidth="Auto"
+                                                   ItemHeight="Auto" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
+
+                                    <ComboBox x:Name="ComboBox"
+                                            IsEditable="True"
+                                            IsReadOnly="False"
+                                            Height="20"
+                                            Width="Auto"
+                                            BorderThickness="0"
+                                            Margin="10,0,0,0"
+                                            Text="{Binding TextBoxTag, RelativeSource={RelativeSource AncestorType={x:Type control:SampleCustomControl}}, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                            ItemsSource="{Binding Taglist, 
+                                                        RelativeSource={RelativeSource TemplatedParent}, 
+                                                        UpdateSourceTrigger=PropertyChanged}" />
+                                </WrapPanel>
+                                <!--<TextBox x:Name="ToDoTag"
+                                             Margin ="10,0,0,0" 
+                                             Width="100"
+                                             Text="{Binding TextBoxTag, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             behaviors:AutoCompleteBehavior.AutoCompleteItemsSource="{Binding Taglist, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />-->
 
                             </Grid>
-                    </Border>
-                        <Button Margin="5,0,10,0"
+                        </Border>
+
+                        <Button Margin="5,10,10,0"
+                                     Grid.Row="1"
+                                    Grid.Column="1"
                                 Name="ButtonAdd"
-                                VerticalAlignment="Center"
+                                VerticalAlignment="Top"
                                 Style="{StaticResource ResourceKey=StyleButton}"
                                 Content="{TemplateBinding ButtonContent}"
                                 Command="{TemplateBinding ButtonCommand}"
-                                Grid.Row="1"
-                                Grid.Column="1" >
+ >
                         </Button>
+
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

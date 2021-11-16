@@ -140,5 +140,14 @@ namespace ToDo.Properties {
                 return ResourceManager.GetString("MainWindowVMNewTodo", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tag:.
+        /// </summary>
+        public static string SampleCustomControlTag {
+            get {
+                return ResourceManager.GetString("SampleCustomControlTag", resourceCulture);
+            }
+        }
     }
 }

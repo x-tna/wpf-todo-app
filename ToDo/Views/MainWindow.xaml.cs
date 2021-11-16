@@ -20,8 +20,7 @@ namespace ToDo.Views
             InitializeComponent();
             DataContext = new MainWindowViewModel(
                 new TodoItemService(),
-                new DateTimeService(),
-                new TagService());
+                new DateTimeService());
 
         }
 

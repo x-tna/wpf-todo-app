@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using ToDo.Commands;
+using ToDo.Models;
 using ToDo.Services;
 
 namespace ToDo.ViewModels
@@ -12,7 +16,6 @@ namespace ToDo.ViewModels
         private readonly ITodoItemService _todoitemService;
         private readonly MainWindowViewModel mainWindowViewModel;
         private readonly IEnumerable<TodoItem> _allTodos;
-        private readonly ITagService _tagService;
 
         public string TodaysTodos { get; set; }
 
@@ -48,25 +51,24 @@ namespace ToDo.ViewModels
 
         }
 
-        public string Tag
+        public ObservableCollection<string> Tags { get; set; }
+
+        public string NewTag 
         {
-            get { return TodoItem.Tag; }
-            set 
+            get { return TodoItem.NewTag; }
+
+            set
             {
-                TodoItem.Tag = value;
-                _todoitemService.WriteTodos(_allTodos);
+                TodoItem.NewTag = value;
+                AddNewTag();
 
-                var todotags = mainWindowViewModel.TodoTags;
+            }
+        }
 
-                if (!todotags.Contains(TodoItem.Tag))
-                {
-                    todotags.Add(TodoItem.Tag);
-                    _tagService.WriteTags(todotags);
-                }
-       
+        public ParameterCommand<string> AddTagCommand { get; }
+        public ParameterCommand<string> DeleteTagCommand { get; }
 
-    }
-}
+
 
         public TodoItem TodoItem { get; }
 
@@ -74,14 +76,64 @@ namespace ToDo.ViewModels
             TodoItem todoitem,
             ITodoItemService todoitemService,
             IEnumerable<TodoItemViewModel> allTodos,
-            MainWindowViewModel mainWindowViewModel,
-            ITagService tagService)
+            MainWindowViewModel mainWindowViewModel)
         {
             TodoItem = todoitem;
             _todoitemService = todoitemService;
             this.mainWindowViewModel = mainWindowViewModel;
             _allTodos = allTodos.Select(vm => vm.TodoItem);
-            _tagService = tagService;
+
+            AddTagCommand = new ParameterCommand<string>(AddTag, CanAddTag);
+            DeleteTagCommand = new ParameterCommand<string>(DeleteSelectedTag, CanDeleteTag);
+
+            Tags = new ObservableCollection<string>(todoitem.Tags);
+
+            NewTag = "+";
+
+
+        }
+
+        private void AddTag()
+        {
+            TodoItem.Tags.Clear();
+            foreach(var tag in Tags)
+            {
+                TodoItem.Tags.Add(tag);
+            }
+ 
+        }
+
+        private bool CanAddTag()
+        {
+            return true;
+        }
+
+        private bool CanDeleteTag(string tag)
+        {
+            return true; 
+        }
+
+        private void DeleteSelectedTag(string tag)
+        {
+            TodoItem.Tags.Remove(tag);
+            Tags.Remove(tag);
+            _todoitemService.WriteTodos(_allTodos);
+            RaisePropertyChanged("");
+            mainWindowViewModel.RaisePropertyChanged("");
+        }
+
+        private void AddNewTag()
+        {
+            if (!String.IsNullOrWhiteSpace(NewTag) & !NewTag.Equals("+") & !Tags.Contains(NewTag))
+            {
+                Tags.Add(NewTag);
+                TodoItem.Tags.Add(NewTag);
+
+                _todoitemService.WriteTodos(_allTodos);
+
+                NewTag = "+";
+                mainWindowViewModel.RaisePropertyChanged("");
+            }
 
         }
     }

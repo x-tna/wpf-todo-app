@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
-namespace ToDo
+namespace ToDo.Models
 {
 
     public class TodoItem : IComparable<TodoItem>
@@ -13,7 +14,8 @@ namespace ToDo
 
         public DateTime Timestamp { get; set; }
 
-        public string Tag { get; set; }
+        public List<string> Tags { get; set; }
+        public string NewTag { get; set; }
 
         public int CompareTo(TodoItem other)
         {
@@ -31,9 +33,6 @@ namespace ToDo
             }
         }
 
-
-
-        
 
     }
 

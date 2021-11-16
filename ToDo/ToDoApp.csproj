@@ -118,9 +118,7 @@
     </Compile>
     <Compile Include="Services\DateTimeService.cs" />
     <Compile Include="Services\IDateTimeService.cs" />
-    <Compile Include="Services\ITagService.cs" />
     <Compile Include="Services\ITodoItemService.cs" />
-    <Compile Include="Services\TagService.cs" />
     <Compile Include="Services\TodoItemService.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Page Include="Controls\SampleUserControl.xaml">
