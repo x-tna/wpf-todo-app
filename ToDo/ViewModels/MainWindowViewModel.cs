@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using ToDo.Commands;
 using ToDo.Models;
@@ -74,7 +75,6 @@ namespace ToDo.ViewModels
         }
 
         private string _newTag;
-
         public string NewTag
         {
             get { return _newTag; }
@@ -89,7 +89,6 @@ namespace ToDo.ViewModels
         }
 
         private ObservableCollection<string> _newTodoTags;
-
         public ObservableCollection<string> NewTodoTags
         {
             get { return _newTodoTags; }
@@ -107,7 +106,6 @@ namespace ToDo.ViewModels
         }
 
         private string _todoTagFilter;
-
         public string TodoTagFilter
         {
             get { return _todoTagFilter; }
@@ -118,7 +116,6 @@ namespace ToDo.ViewModels
                 ShowFilteredItems();
             }
         }
-
 
 
         private ObservableCollection<TodoItemViewModel> _todoItems;
@@ -134,7 +131,6 @@ namespace ToDo.ViewModels
         }
 
         private int _numberOfTodaysActiveTodos;
-
         public int NumberOfTodaysActiveTodos
         {
             get { return _numberOfTodaysActiveTodos; }
@@ -154,6 +150,17 @@ namespace ToDo.ViewModels
         public ParameterCommand<TodoItemViewModel> DeleteTodoCommand { get; }
         public ParameterCommand<string> DeleteNewTagCommand { get; }
 
+        private bool _isBusy;
+
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set 
+            { 
+                _isBusy = value;
+                RaisePropertyChanged(nameof(IsBusy));
+            }
+        }
 
 
         public MainWindowViewModel(
@@ -162,7 +169,8 @@ namespace ToDo.ViewModels
         {
             _todoItemService = todoItemService;
             _dateTimeService = dateTimeService;
-         
+
+            IsBusy = false;
 
             AddTodoCommand = new ActionCommand(AddNewTodo, CanAddNewTodo);
             ShowAllCommand = new ActionCommand(ShowAll, CanShowAll);
@@ -284,7 +292,7 @@ namespace ToDo.ViewModels
 
                 TodoItems.Add(CreateTodoViewModel(newItem));
 
-                _todoItemService.WriteTodos(TodoItems.Select(vm => vm.TodoItem));
+                WriteTodosAsync();
 
                 CountTodaysActiveTodos();
 
@@ -308,7 +316,7 @@ namespace ToDo.ViewModels
             if(todoItem.IsDone)
             {
                 TodoItems.Remove(todoItem);
-                _todoItemService.WriteTodos(TodoItems.Select(vm => vm.TodoItem));
+                WriteTodosAsync();
                 CountTodaysActiveTodos();
             }
        
@@ -343,6 +351,27 @@ namespace ToDo.ViewModels
             }
 
         }
+
+        public async void WriteTodosAsync()
+        {
+            try
+            {
+                IsBusy = true;                
+                await _todoItemService.WriteTodos(TodoItems.Select(vm => vm.TodoItem));
+                await Waiting();
+                IsBusy = false;
+            }catch(Exception ex)
+            {
+
+            }
+
+        }
+
+        public async Task Waiting()
+        {
+            await Task.Delay(2000);
+        }
+
 
     }
 }

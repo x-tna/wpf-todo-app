@@ -11,7 +11,7 @@ namespace ToDo.Services
     {
         IEnumerable<TodoItem> ReadTodos();
 
-        void WriteTodos(IEnumerable<TodoItem> todoItems);
+        Task WriteTodos(IEnumerable<TodoItem> todoItems);
 
     }
 }

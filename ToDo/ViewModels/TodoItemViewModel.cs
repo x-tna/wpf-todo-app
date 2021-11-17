@@ -42,7 +42,7 @@ namespace ToDo.ViewModels
             set
             {
                 TodoItem.IsDone = value;
-                _todoitemService.WriteTodos(_allTodos);
+                mainWindowViewModel.WriteTodosAsync();
 
                 mainWindowViewModel.CountTodaysActiveTodos();
                 mainWindowViewModel.DeleteTodoCommand?.RaisCanExecuteChanged();
@@ -116,9 +116,11 @@ namespace ToDo.ViewModels
         {
             TodoItem.Tags.Remove(tag);
             Tags.Remove(tag);
-            _todoitemService.WriteTodos(_allTodos);
+            
             RaisePropertyChanged("");
             mainWindowViewModel.RaisePropertyChanged("");
+
+            mainWindowViewModel.WriteTodosAsync();
         }
 
         private void AddNewTag()
@@ -128,12 +130,13 @@ namespace ToDo.ViewModels
                 Tags.Add(NewTag);
                 TodoItem.Tags.Add(NewTag);
 
-                _todoitemService.WriteTodos(_allTodos);
+                mainWindowViewModel.WriteTodosAsync();
 
                 NewTag = "+";
                 mainWindowViewModel.RaisePropertyChanged("");
             }
 
         }
+
     }
 }

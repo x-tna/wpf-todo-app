@@ -24,7 +24,7 @@ namespace ToDo.Services
 
         }
 
-        public void WriteTodos(IEnumerable<TodoItem> todoItems)
+        public async Task WriteTodos(IEnumerable<TodoItem> todoItems)
         {
             if (!File.Exists(path))
             {
@@ -33,7 +33,13 @@ namespace ToDo.Services
 
             var jsonString = JsonConvert.SerializeObject(todoItems, Formatting.Indented);
 
-            File.WriteAllText(path, jsonString);
+
+            using (var fileStream = File.CreateText(path))
+            {
+                await fileStream.WriteAsync(jsonString);
+            }
+
+            
 
 
         }

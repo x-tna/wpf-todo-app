@@ -23,7 +23,7 @@ namespace TodoApp.UnitTests.ViewModels
 
         public bool WriteToDosWasCalled { get; private set; }
 
-        public void WriteTodos(IEnumerable<TodoItem> todoItems)
+        public async Task WriteTodos(IEnumerable<TodoItem> todoItems)
         {
             WriteToDosWasCalled = true;
         }

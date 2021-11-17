@@ -13,9 +13,9 @@ namespace ToDo.Models
         public bool IsDone { get; set; }
 
         public DateTime Timestamp { get; set; }
-
-        public List<string> Tags { get; set; }
         public string NewTag { get; set; }
+        public List<string> Tags { get; set; }
+        
 
         public int CompareTo(TodoItem other)
         {
