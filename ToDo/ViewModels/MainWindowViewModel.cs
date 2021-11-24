@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -47,6 +48,8 @@ namespace ToDo.ViewModels
 
     public class MainWindowViewModel : ViewModelBase
     {
+        protected static readonly ILog Log = log4net.LogManager.GetLogger(typeof(MainWindowViewModel));
+
         private readonly ITodoItemService _todoItemService;
         private readonly IDateTimeService _dateTimeService;
 
@@ -362,7 +365,7 @@ namespace ToDo.ViewModels
                 IsBusy = false;
             }catch(Exception ex)
             {
-
+                Log.Error($"Exception: Fehler beim schreiben der Datei", ex);
             }
 
         }
