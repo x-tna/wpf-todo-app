@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using log4net;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,9 +9,12 @@ using System.Threading.Tasks;
 using ToDo.Models;
 
 namespace ToDo.Services
-{
+{ 
+
     public class TodoItemService : ITodoItemService
     {
+        protected static readonly ILog Log = log4net.LogManager.GetLogger(typeof(TodoItemService));
+
         string path = @"C:\01_DATA\Temp\ToDoListe.txt";
 
         public IEnumerable<TodoItem> ReadTodos()
@@ -20,12 +24,17 @@ namespace ToDo.Services
 
             var jsonString = File.ReadAllText(path);
 
+            Log.Debug($" {jsonString} Todos erfolgreich aus {path} gelesen");
+
             return JsonConvert.DeserializeObject<IEnumerable<TodoItem>>(jsonString);
+
 
         }
 
         public async Task WriteTodos(IEnumerable<TodoItem> todoItems)
         {
+            Log.Info($"Schreiben von {path} gestartet..");
+
             if (!File.Exists(path))
             {
                 using (var file = File.Create(path)) { };
@@ -39,8 +48,8 @@ namespace ToDo.Services
                 await fileStream.WriteAsync(jsonString);
             }
 
-            
 
+            Log.Debug($" {todoItems.Count()} Todos erfolgreich geschrieben");
 
         }
 

@@ -57,3 +57,6 @@ using System.Windows;
 
 // Interne Klassen für Test-Projekt zur Verfügung stellen
 [assembly: InternalsVisibleTo("TodoApp.UnitTests")]
+
+// Log4Net 
+[assembly: log4net.Config.XmlConfigurator(ConfigFile = "log4net.config")]
